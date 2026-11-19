@@ -2,10 +2,10 @@
 
 SPA(admin-web)가 소비하는 순수 JSON API 를 제공한다(UI 없음). 인증은
 admin_accounts(bcrypt) + 서버측 세션(HttpOnly 쿠키). 데이터 경로:
-  - hub_data 읽기전용 직접(app.repo)
-  - admin_data 소유 RW(app.accounts / app.audit)
-  - Redis 진단 RO(app.redis_probe)
-  - hub/BFF `/internal` 위임(app.hub_client / app.bff_client) — 관리 콘솔 내부 API 경계
+  - hub_data 읽기전용 직접(map_project_admin.repo)
+  - admin_data 소유 RW(map_project_admin.accounts / map_project_admin.audit)
+  - Redis 진단 RO(map_project_admin.redis_probe)
+  - hub/BFF `/internal` 위임(map_project_admin.hub_client / map_project_admin.bff_client) — 관리 콘솔 내부 API 경계
 
 라우터: auth · ops · db · users · jobs · actions · audit (전부 /api/v1).
 /health 는 인증 없음(compose healthcheck), /docs·/openapi 는 세션 보호.
@@ -24,10 +24,10 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from prometheus_fastapi_instrumentator import Instrumentator
 from sqlalchemy.exc import SQLAlchemyError
 
-from app import accounts, audit
-from app.config import settings, control_settings, select_environment, select_control, reset_environment
-from app.db import dispose_engine
-from app.routers import (
+from map_project_admin import accounts, audit
+from map_project_admin.config import settings, control_settings, select_environment, select_control, reset_environment
+from map_project_admin.db import dispose_engine
+from map_project_admin.routers import (
     actions_router,
     audit_router,
     auth_router,
@@ -37,7 +37,7 @@ from app.routers import (
     users_router,
     operators_router,
 )
-from app.security import require_operator
+from map_project_admin.security import require_operator
 
 logger = logging.getLogger(__name__)
 
@@ -131,7 +131,7 @@ app.include_router(jobs_router.router)
 app.include_router(actions_router.router)
 app.include_router(audit_router.router)
 app.include_router(operators_router.router)
-from app.routers import moderation_router
+from map_project_admin.routers import moderation_router
 app.include_router(moderation_router.router)
 
 
@@ -143,7 +143,7 @@ async def health() -> dict[str, str]:
 
 @app.get("/health/ready", include_in_schema=False)
 async def ready():
-    from app.db import get_control_engine
+    from map_project_admin.db import get_control_engine
     from sqlalchemy import text
     try:
         async with get_control_engine().connect() as conn:

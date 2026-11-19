@@ -5,10 +5,10 @@ os.environ.setdefault("ADMIN_DATABASE_URL", "postgresql+psycopg://map_admin:x@lo
 import pytest
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
-from app import accounts, audit, bff_client, health_client, redis_probe, repo
-from app.config import control_settings, settings, select_environment, reset_environment
-from app.main import app
-from app.security import require_operator
+from map_project_admin import accounts, audit, bff_client, health_client, redis_probe, repo
+from map_project_admin.config import control_settings, settings, select_environment, reset_environment
+from map_project_admin.main import app
+from map_project_admin.security import require_operator
 
 
 @pytest.fixture

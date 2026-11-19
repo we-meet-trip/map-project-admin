@@ -5,9 +5,9 @@ admin_accounts(bcrypt) 로 로그인하고 admin_sessions(HttpOnly 쿠키의 서
 운영자마다 계정으로 로그인한다.
 
 호출 관계:
-  - app.main lifespan → bootstrap_if_empty (최초 계정 시드)
-  - app.routers.auth_router → authenticate / create_session / delete_session
-  - app.security.require_operator → operator_for_session
+  - map_project_admin.main lifespan → bootstrap_if_empty (최초 계정 시드)
+  - map_project_admin.routers.auth_router → authenticate / create_session / delete_session
+  - map_project_admin.security.require_operator → operator_for_session
 """
 from __future__ import annotations
 
@@ -21,8 +21,8 @@ from datetime import datetime, timedelta, timezone
 import bcrypt
 from sqlalchemy import text
 
-from app.config import settings, control_settings
-from app.db import get_control_engine as get_engine
+from map_project_admin.config import settings, control_settings
+from map_project_admin.db import get_control_engine as get_engine
 
 logger = logging.getLogger(__name__)
 

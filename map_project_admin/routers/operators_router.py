@@ -3,9 +3,9 @@ from typing import Literal
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field, field_validator
 from sqlalchemy.exc import IntegrityError
-from app import accounts, audit
-from app.config import environment_name, environment_names
-from app.security import require_operator, require_owner
+from map_project_admin import accounts, audit
+from map_project_admin.config import environment_name, environment_names
+from map_project_admin.security import require_operator, require_owner
 
 router = APIRouter(prefix="/api/v1", tags=["operators"])
 

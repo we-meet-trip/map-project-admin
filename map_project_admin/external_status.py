@@ -17,8 +17,8 @@ from typing import Any
 
 import httpx
 
-from app import gemini_client, redis_probe
-from app.config import settings
+from map_project_admin import gemini_client, redis_probe
+from map_project_admin.config import settings
 
 logger = logging.getLogger(__name__)
 

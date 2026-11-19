@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from app.config import settings
-from app.upstream import request_hub_admin_json as request_json
+from map_project_admin.config import settings
+from map_project_admin.upstream import request_hub_admin_json as request_json
 
 
 def _base() -> str:

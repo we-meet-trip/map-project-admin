@@ -21,4 +21,4 @@ fi
 unset ADMIN_CONTROL_MIGRATION_DATABASE_URL
 
 echo "entrypoint: starting uvicorn"
-exec uvicorn app.main:app --host 0.0.0.0 --port 8000
+exec uvicorn map_project_admin.main:app --host 0.0.0.0 --port 8000

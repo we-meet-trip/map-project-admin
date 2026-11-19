@@ -17,7 +17,7 @@ from typing import Any
 
 from sqlalchemy import text
 
-from app.db import get_engine
+from map_project_admin.db import get_engine
 
 
 async def _row(conn, sql: str) -> dict[str, Any]:

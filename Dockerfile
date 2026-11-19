@@ -34,7 +34,7 @@ RUN apt-get purge -y --allow-remove-essential perl-base \
  && test -z "$(find /usr/bin /usr/sbin -xdev -type f -perm /6000 -print -quit)"
 # 애플리케이션 소스 + 마이그레이션(alembic.ini/migrations) + 엔트리포인트.
 # 소유자를 app:app 로 지정. entrypoint.sh 는 실행 권한 부여.
-COPY --chown=app:app app ./app
+COPY --chown=app:app map_project_admin ./map_project_admin
 COPY --chown=app:app alembic.ini ./alembic.ini
 COPY --chown=app:app migrations ./migrations
 COPY --chown=app:app entrypoint.sh ./entrypoint.sh
@@ -45,5 +45,5 @@ EXPOSE 8000
 # start-period 를 넉넉히(45s) 준다 — 기동 시 alembic upgrade 가 선행하므로.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=45s --retries=3 \
   CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health/ready', timeout=5).status==200 else 1)"
-# 엔트리포인트: alembic upgrade head → uvicorn (app.entrypoint.sh 참조).
+# 엔트리포인트: alembic upgrade head → uvicorn (entrypoint.sh 참조).
 ENTRYPOINT ["./entrypoint.sh"]

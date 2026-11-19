@@ -5,8 +5,8 @@
 변경 요청은 실행 전 시작 기록을 남기며, 감사 저장 실패는 503을 반환한다.
 
 호출 관계:
-  - app.routers.actions_router / users_router / ops_router 의 각 액션 후 record
-  - app.routers.audit_router → list_logs
+  - map_project_admin.routers.actions_router / users_router / ops_router 의 각 액션 후 record
+  - map_project_admin.routers.audit_router → list_logs
 """
 from __future__ import annotations
 
@@ -17,8 +17,8 @@ from typing import Any
 
 from sqlalchemy import text
 
-from app.db import get_control_engine as get_engine
-from app.config import environment_name, control_settings
+from map_project_admin.db import get_control_engine as get_engine
+from map_project_admin.config import environment_name, control_settings
 from fastapi import HTTPException
 
 logger = logging.getLogger(__name__)

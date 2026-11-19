@@ -21,8 +21,8 @@ import httpx
 import redis.asyncio as aioredis
 from sqlalchemy import text
 
-from app.config import settings
-from app.db import get_engine
+from map_project_admin.config import settings
+from map_project_admin.db import get_engine
 
 # (표시명, base_url, health path)
 def _http_targets() -> list[tuple[str, str, str]]:

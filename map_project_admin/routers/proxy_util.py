@@ -8,7 +8,7 @@ from typing import Any, Awaitable
 
 from fastapi import HTTPException, status
 
-from app.upstream import UpstreamError, UpstreamUnavailable
+from map_project_admin.upstream import UpstreamError, UpstreamUnavailable
 
 
 async def proxied(awaitable: Awaitable[Any]) -> Any:

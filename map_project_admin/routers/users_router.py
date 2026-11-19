@@ -8,9 +8,9 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 
-from app import audit, bff_client
-from app.routers.proxy_util import proxied
-from app.security import require_operator
+from map_project_admin import audit, bff_client
+from map_project_admin.routers.proxy_util import proxied
+from map_project_admin.security import require_operator
 
 
 def _request_ip(request: Request) -> str | None:

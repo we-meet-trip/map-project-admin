@@ -7,9 +7,9 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, Query
 
-from app import bff_client
-from app.routers.proxy_util import proxied
-from app.security import require_operator
+from map_project_admin import bff_client
+from map_project_admin.routers.proxy_util import proxied
+from map_project_admin.security import require_operator
 
 router = APIRouter(
     prefix="/api/v1/jobs",

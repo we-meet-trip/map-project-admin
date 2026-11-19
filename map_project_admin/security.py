@@ -11,8 +11,8 @@ from __future__ import annotations
 
 from fastapi import Depends, HTTPException, Request, status
 
-from app import accounts, audit
-from app.config import settings, environment_name
+from map_project_admin import accounts, audit
+from map_project_admin.config import settings, environment_name
 
 
 async def require_operator(request: Request) -> str:

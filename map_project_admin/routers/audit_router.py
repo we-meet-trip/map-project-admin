@@ -9,9 +9,9 @@ from datetime import datetime
 
 from fastapi import APIRouter, Depends, Query
 
-from app import audit
-from app.config import settings
-from app.security import require_operator
+from map_project_admin import audit
+from map_project_admin.config import settings
+from map_project_admin.security import require_operator
 
 router = APIRouter(
     prefix="/api/v1/audit",

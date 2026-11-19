@@ -5,11 +5,11 @@ os.environ.setdefault("ADMIN_DATABASE_URL", "postgresql+psycopg://map_admin:x@lo
 import pytest
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
-from app import accounts, audit
-from app.config import control_settings
-from app.main import app
-from app.routers import moderation_router as route
-from app.upstream import UpstreamError, UpstreamUnavailable
+from map_project_admin import accounts, audit
+from map_project_admin.config import control_settings
+from map_project_admin.main import app
+from map_project_admin.routers import moderation_router as route
+from map_project_admin.upstream import UpstreamError, UpstreamUnavailable
 
 
 @pytest.fixture

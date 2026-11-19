@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 
-from app import (
+from map_project_admin import (
     audit,
     external_status,
     gemini_client,
@@ -15,8 +15,8 @@ from app import (
     redis_probe,
     repo,
 )
-from app.config import settings
-from app.security import require_operator
+from map_project_admin.config import settings
+from map_project_admin.security import require_operator
 
 router = APIRouter(
     prefix="/api/v1/ops",

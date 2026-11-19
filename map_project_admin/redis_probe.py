@@ -16,7 +16,7 @@ from typing import Any
 
 import redis.asyncio as aioredis
 
-from app.config import settings
+from map_project_admin.config import settings
 
 logger = logging.getLogger(__name__)
 

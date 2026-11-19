@@ -11,9 +11,9 @@ import io
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import StreamingResponse
 
-from app import repo
-from app.config import settings
-from app.security import require_operator
+from map_project_admin import repo
+from map_project_admin.config import settings
+from map_project_admin.security import require_operator
 
 router = APIRouter(
     prefix="/api/v1/db",

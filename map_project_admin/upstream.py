@@ -17,7 +17,7 @@ import re
 
 import httpx
 
-from app.config import settings
+from map_project_admin.config import settings
 
 
 class UpstreamError(Exception):

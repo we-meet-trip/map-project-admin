@@ -16,9 +16,9 @@ from typing import Any, Literal
 from fastapi import APIRouter, Depends, Query, Request
 from pydantic import BaseModel, Field
 
-from app import audit, bff_client, hub_client
-from app.routers.proxy_util import proxied
-from app.security import require_operator
+from map_project_admin import audit, bff_client, hub_client
+from map_project_admin.routers.proxy_util import proxied
+from map_project_admin.security import require_operator
 
 router = APIRouter(
     prefix="/api/v1/actions",

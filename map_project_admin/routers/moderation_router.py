@@ -12,10 +12,10 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from app import audit
-from app.config import environment_name, settings
-from app.security import require_operator
-from app.upstream import UpstreamError, UpstreamUnavailable, request_user_admin_json as request_json
+from map_project_admin import audit
+from map_project_admin.config import environment_name, settings
+from map_project_admin.security import require_operator
+from map_project_admin.upstream import UpstreamError, UpstreamUnavailable, request_user_admin_json as request_json
 
 router = APIRouter(prefix="/api/v1/moderation", tags=["moderation"])
 Status = Literal["OPEN", "IN_REVIEW", "ACTIONED", "DISMISSED"]

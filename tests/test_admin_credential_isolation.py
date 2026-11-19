@@ -2,8 +2,8 @@ import asyncio
 import httpx
 import pytest
 from pydantic import SecretStr
-from app import bff_client, hub_client, upstream
-from app.config import control_settings, select_environment, reset_environment
+from map_project_admin import bff_client, hub_client, upstream
+from map_project_admin.config import control_settings, select_environment, reset_environment
 
 
 @pytest.fixture
@@ -137,7 +137,7 @@ def test_redirect_does_not_forward_management_credential(monkeypatch):
 
 
 def test_moderation_delegation_uses_selected_management_credential(transport):
-    from app.routers.moderation_router import delegated
+    from map_project_admin.routers.moderation_router import delegated
     asyncio.run(delegated("GET", ""))
     assert len(transport)==1 and transport[0].headers["X-Internal-Token"]=="synthetic-admin"
 

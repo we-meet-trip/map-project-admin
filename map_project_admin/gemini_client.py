@@ -13,7 +13,7 @@ from typing import Any
 
 import httpx
 
-from app.config import settings
+from map_project_admin.config import settings
 
 
 async def check_gemini() -> dict[str, Any]:

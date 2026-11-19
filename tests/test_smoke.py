@@ -18,7 +18,7 @@ os.environ.setdefault("INTERNAL_SERVICE_TOKEN", "test-token")
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 
-from app import (  # noqa: E402
+from map_project_admin import (  # noqa: E402
     accounts,
     audit,
     bff_client,
@@ -27,9 +27,9 @@ from app import (  # noqa: E402
     hub_client,
     repo,
 )
-from app.main import app  # noqa: E402
-from app.security import require_operator  # noqa: E402
-from app.upstream import UpstreamError, UpstreamUnavailable  # noqa: E402
+from map_project_admin.main import app  # noqa: E402
+from map_project_admin.security import require_operator  # noqa: E402
+from map_project_admin.upstream import UpstreamError, UpstreamUnavailable  # noqa: E402
 
 client = TestClient(app)
 

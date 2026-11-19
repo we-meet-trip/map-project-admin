@@ -8,9 +8,9 @@ from sqlalchemy import text
 
 os.environ.setdefault("ADMIN_DATABASE_URL", "postgresql+psycopg://map_admin:x@localhost:5432/map")
 
-from app import accounts, audit
-from app.config import control_settings, reset_environment, select_environment
-from app.db import dispose_engine, get_control_engine
+from map_project_admin import accounts, audit
+from map_project_admin.config import control_settings, reset_environment, select_environment
+from map_project_admin.db import dispose_engine, get_control_engine
 
 
 @pytest.mark.skipif(not os.getenv("MAP_ADMIN_ISOLATED_TEST_DATABASE_URL"), reason="isolated PostgreSQL not configured")

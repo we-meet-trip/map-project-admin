@@ -4,8 +4,8 @@ import httpx
 import pytest
 from fastapi import HTTPException
 
-from app import upstream
-from app.routers.proxy_util import proxied
+from map_project_admin import upstream
+from map_project_admin.routers.proxy_util import proxied
 
 
 @pytest.mark.parametrize("status", [400, 401, 403, 404, 409, 422, 429, 500, 503, 307])

@@ -51,8 +51,8 @@ try:
         checks["runtime_audit_delete_denied"] = not conn.execute("SELECT has_table_privilege(current_user,'admin_data.audit_logs','DELETE')").fetchone()[0]
         checks["runtime_migration_write_denied"] = not conn.execute("SELECT has_table_privilege(current_user,'admin_data.alembic_version','UPDATE')").fetchone()[0]
     from fastapi.testclient import TestClient
-    from app.main import app
-    from app.config import control_settings
+    from map_project_admin.main import app
+    from map_project_admin.config import control_settings
     with TestClient(app, raise_server_exceptions=False) as client:
         checks["control_bootstrap_ready"] = client.get("/health/ready").status_code == 200
         checks["login_without_target"] = client.post("/api/v1/auth/login", json={"username":"synthetic-owner", "password":password}).status_code == 200

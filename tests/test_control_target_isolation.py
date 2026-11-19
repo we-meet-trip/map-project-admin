@@ -5,9 +5,9 @@ os.environ.setdefault("ADMIN_DATABASE_URL", "postgresql+psycopg://legacy:x@local
 import pytest
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
-from app import accounts, audit, db
-from app.config import control_settings, settings, select_environment, reset_environment
-from app.main import app
+from map_project_admin import accounts, audit, db
+from map_project_admin.config import control_settings, settings, select_environment, reset_environment
+from map_project_admin.main import app
 
 
 def target(**overrides):
@@ -72,7 +72,7 @@ def test_readonly_target_pool_separate_even_when_legacy_dsn_is_same(monkeypatch)
 
 
 def test_api_only_target_has_no_database_or_redis_fallback(monkeypatch):
-    from app import health_client, redis_probe
+    from map_project_admin import health_client, redis_probe
     config = target()
     config.pop("ADMIN_REDIS_URL")
     monkeypatch.setattr(control_settings, "ADMIN_TARGETS", {"test": config})

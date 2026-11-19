@@ -4,7 +4,7 @@ from __future__ import annotations
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
-from app.config import settings, control_settings
+from map_project_admin.config import settings, control_settings
 
 _engines: dict[tuple[bool, str], AsyncEngine] = {}
 
@@ -33,7 +33,7 @@ def get_control_engine() -> AsyncEngine:
 
 
 async def dispose_engine() -> None:
-    """엔진과 풀을 정리한다. app.main lifespan 종료 시 1회 호출."""
+    """엔진과 풀을 정리한다. map_project_admin.main lifespan 종료 시 1회 호출."""
     for engine in _engines.values():
         await engine.dispose()
     _engines.clear()
