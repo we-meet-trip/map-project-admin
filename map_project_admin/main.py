@@ -1,4 +1,4 @@
-"""map-service-admin — 운영 콘솔 JSON API 서버.
+"""map-project-admin — 운영 콘솔 JSON API 서버.
 
 SPA(admin-web)가 소비하는 순수 JSON API 를 제공한다(UI 없음). 인증은
 admin_accounts(bcrypt) + 서버측 세션(HttpOnly 쿠키). 데이터 경로:
@@ -60,7 +60,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 
 app = FastAPI(
-    title="map-service-admin",
+    title="map-project-admin",
     version="0.2.0-cut2",
     lifespan=lifespan,
     docs_url=None,

@@ -1,6 +1,6 @@
 #!/bin/sh
 # =========================================================================
-# map-service-admin 컨테이너 엔트리포인트
+# map-project-admin 컨테이너 엔트리포인트
 #
 # uvicorn 기동 전에 admin_data 스키마 마이그레이션을 적용한다.
 #   1) alembic upgrade head — admin_data(audit_logs/admin_accounts/

@@ -1,4 +1,4 @@
-# map-service-admin 런타임 의존성 (운영 콘솔 JSON API).
+# map-project-admin 런타임 의존성 (운영 콘솔 JSON API).
 #
 # hub 의존성의 부분집합. UI 는 별도 SPA(admin-web)가 담당하므로 Jinja2 는
 # 제거했다. Redis 진단 RO(스트림/쿼터/캐시)를 위해 redis 를 추가한다.

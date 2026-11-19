@@ -1,4 +1,4 @@
-"""map-service-admin 환경설정 (운영 콘솔 JSON API).
+"""map-project-admin 환경설정 (운영 콘솔 JSON API).
 
 다른 서비스(user/agent/hub)와 동일한 프로젝트 루트 `.env` 를 공유하므로
 `extra="ignore"` 로 무관한 키를 무시한다(hub/config.py 와 동일 규약).

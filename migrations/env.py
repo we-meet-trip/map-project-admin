@@ -1,4 +1,4 @@
-"""Alembic 환경 진입점 (map-service-admin).
+"""Alembic 환경 진입점 (map-project-admin).
 
 Alembic CLI(`alembic upgrade`/`downgrade`) 가 임포트하는 모듈이며,
 hub/migrations/env.py 의 규약을 그대로 미러링하되 대상 스키마만 admin_data 다.

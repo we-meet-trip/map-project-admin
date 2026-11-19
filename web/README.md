@@ -1,6 +1,6 @@
 # MAP 운영 콘솔 (map-admin-web)
 
-MAP 백엔드 운영자용 관리 콘솔 SPA. `map-service-admin` JSON API를 소비하는 읽기 우선 대시보드이며, 모든 쓰기 액션은 확인 다이얼로그를 거쳐 서버 측 감사 로그에 기록됩니다.
+MAP 백엔드 운영자용 관리 콘솔 SPA. `map-project-admin` JSON API를 소비하는 읽기 우선 대시보드이며, 모든 쓰기 액션은 확인 다이얼로그를 거쳐 서버 측 감사 로그에 기록됩니다.
 
 ## 기술 스택
 
@@ -45,7 +45,7 @@ docker build -t map-admin-web .
   - `location /api/` → `proxy_pass http://admin:8000;`
   - `location /` → `try_files $uri /index.html;` (SPA 폴백)
 
-`map-service-infra`의 docker-compose에서 이 이미지를 서비스로 추가하고 admin과 같은 네트워크(map-net)에 두면 됩니다.
+`map-project-infra`의 docker-compose에서 이 이미지를 서비스로 추가하고 admin과 같은 네트워크(map-net)에 두면 됩니다.
 
 ## 인증 흐름
 

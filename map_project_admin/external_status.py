@@ -183,7 +183,7 @@ async def _probe_durunubi(client: httpx.AsyncClient) -> tuple[bool, Any]:
         "https://apis.data.go.kr/B551011/Durunubi/routeList",
         params={
             "serviceKey": key, "MobileOS": "ETC",
-            "MobileApp": "map-service", "_type": "json",
+            "MobileApp": "map-project", "_type": "json",
             "numOfRows": 1, "pageNo": 1,
         },
     )

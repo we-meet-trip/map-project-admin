@@ -1,5 +1,5 @@
 /**
- * Typed shapes for the admin JSON API (map-service-admin).
+ * Typed shapes for the admin JSON API (map-project-admin).
  * JSON blobs whose shape is opaque are typed as `JsonValue`.
  */
 
