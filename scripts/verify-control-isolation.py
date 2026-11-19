@@ -21,7 +21,7 @@ def sql(query):
     return run(["docker", "exec", "-i", name, "psql", "-U", "postgres", "-v", "ON_ERROR_STOP=1"], input=query).stdout
 
 try:
-    run(["docker", "run", "--pull", "never", "-d", "--name", name, "--memory", "384m", "--tmpfs", "/var/lib/postgresql/data", "-p", "127.0.0.1::5432", "-e", "POSTGRES_PASSWORD", "postgis/postgis:17-3.5"], env=env)
+    run(["docker", "run", "--pull", "never", "--rm", "-d", "--name", name, "--memory", "384m", "--tmpfs", "/var/lib/postgresql/data", "-p", "127.0.0.1::5432", "-e", "POSTGRES_PASSWORD", "postgis/postgis:17-3.5"], env=env)
     for attempt in range(60):
         if subprocess.run(["docker", "exec", name, "pg_isready", "-h", "127.0.0.1", "-U", "postgres"], capture_output=True).returncode == 0:
             break
@@ -69,5 +69,6 @@ except Exception as exc:
     print(json.dumps({"scope":"local synthetic", "container":name, "overall":False, "error_type":type(exc).__name__, "safe_detail": (getattr(exc, "stderr", "") or "").replace(password, "[REDACTED]")[-1500:]}))
     sys.exit(1)
 finally:
-    # Only the newly created tmpfs test container is stopped. No existing DB/volume touched.
+    # Only the newly created tmpfs test container is stopped; --rm removes it on stop.
+    # No existing DB/volume is touched.
     subprocess.run(["docker", "stop", name], capture_output=True)
