@@ -3,7 +3,6 @@
 
 Revision ID: 0001_create_audit_logs
 Revises:
-Create Date: 2026-07-13
 
 운영자 행위 감사 로그를 영속 저장하는 admin_data.audit_logs 테이블을 만든다
 (SR-SYS-006 / SR-ADMIN-007 실현). 모든 운영 액션(격자 토글·KMA 강제갱신·

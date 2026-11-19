@@ -3,7 +3,6 @@
 
 Revision ID: 0002_create_admin_accounts_sessions
 Revises: 0001_create_audit_logs
-Create Date: 2026-07-13
 
 운영자 인증(SR-ADMIN-008)을 위한 계정·세션 테이블을 만든다.
   - admin_accounts : 운영자 계정(username + bcrypt password_hash).
