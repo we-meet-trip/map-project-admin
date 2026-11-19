@@ -1,4 +1,4 @@
-"""운영 액션 라우터 — hub/BFF 위임 + audit 기록 .
+"""운영 액션 라우터 — hub/BFF 위임 + audit 기록.
 
 모든 쓰기 액션은 소유 서비스 `/internal` 로 위임하고(관리 콘솔 내부 API 경계), 실행 후
 admin_data.audit_logs 에 actor/params/before/after 를 기록한다. 전 라우트
