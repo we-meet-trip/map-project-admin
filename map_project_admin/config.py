@@ -69,8 +69,9 @@ class Settings(BaseSettings):
     ADMIN_BOOTSTRAP_PASSWORD: SecretStr = SecretStr("")
     ADMIN_SESSION_COOKIE_NAME: str = "admin_session"
     ADMIN_SESSION_TTL_MIN: int = 720  # 12h
-    # 터널(HTTPS) 배포 시 True. loopback dev 는 False(쿠키 전송 허용).
-    ADMIN_SESSION_COOKIE_SECURE: bool = False
+    # 기본 True: 세션 쿠키를 HTTPS 로만 보낸다. http://127.0.0.1 로 띄우는 로컬 실행에서만
+    # False 로 바꾼다(.env.example 참고).
+    ADMIN_SESSION_COOKIE_SECURE: bool = True
 
     # [CORS] dev SPA origin 목록. JSON 배열만 받는다(콤마 구분·빈 값은 기동 오류). 프로덕션은 nginx
     # same-origin 프록시라 비워 둔다. 세션 쿠키를 위해 allow_credentials=True.

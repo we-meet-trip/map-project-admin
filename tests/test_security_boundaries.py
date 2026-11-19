@@ -237,3 +237,12 @@ def test_logout_records_only_a_real_session(client, monkeypatch):
     assert client.post("/api/v1/auth/logout").status_code == 204
     entries = [call for call in calls if call["action"] == "auth.logout"]
     assert len(entries) == 1 and entries[0]["actor"] == "person"
+
+
+# ── 세션 쿠키 기본값 ──────────────────────────────────────────────
+
+def test_session_cookie_is_secure_by_default(monkeypatch):
+    """로컬 실행은 .env 에서 false 로 바꾸지만, 아무것도 주지 않으면 HTTPS 전용이다."""
+    from map_project_admin.config import Settings
+    monkeypatch.delenv("ADMIN_SESSION_COOKIE_SECURE", raising=False)
+    assert Settings(_env_file=None).ADMIN_SESSION_COOKIE_SECURE is True
