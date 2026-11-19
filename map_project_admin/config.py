@@ -47,8 +47,11 @@ class MonitoringPanel(BaseModel):
 class Settings(BaseSettings):
     """환경변수/`.env` 기반 설정."""
 
+    # 빈 값(`KEY=`)은 설정하지 않은 것으로 본다. 여러 서비스가 나눠 쓰는 .env·compose 가
+    # 다른 서비스용으로 비워 둔 키 때문에 목록·불리언·숫자 설정이 기동을 막지 않게 한다.
+    # 대상 환경 설정(ADMIN_TARGETS 안의 빈 값)은 환경변수가 아니라 이 영향을 받지 않는다.
     model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8", extra="ignore"
+        env_file=".env", env_file_encoding="utf-8", extra="ignore", env_ignore_empty=True
     )
 
     # 중앙 모드: 계정·세션·감사를 둘 control DB 의 런타임 DSN.
