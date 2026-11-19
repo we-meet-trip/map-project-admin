@@ -21,7 +21,7 @@ npm run dev
 ```
 - 개발 서버: <http://localhost:5173>
 - `/api` 요청은 `vite.config.ts` 의 프록시가 로컬 admin API(`http://127.0.0.1:8002`)로 넘긴다.
-- admin API 를 함께 띄워야 로그인과 데이터 호출이 된다. 개발 서버는 다른 출처라 admin `.env` 에 `ADMIN_CORS_ORIGINS=["http://localhost:5173"]` 와 `ADMIN_SESSION_COOKIE_SECURE=false`(http 로컬 실행용)가 필요하다.
+- admin API 를 함께 띄워야 로그인과 데이터 호출이 된다. 화면은 상대 경로 `/api` 로 요청하고 개발 서버가 이를 프록시하므로 브라우저 입장에서는 같은 출처다 — CORS 설정은 필요 없다. http 로 띄우므로 admin `.env` 에 `ADMIN_SESSION_COOKIE_SECURE=false`(로컬 실행용)가 필요하다.
 
 ## 빌드
 ```bash
