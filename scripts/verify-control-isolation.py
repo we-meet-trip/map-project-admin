@@ -9,7 +9,7 @@ import time
 import uuid
 
 root = Path(__file__).resolve().parents[1]
-name = "map-control-isolation-20260906-" + uuid.uuid4().hex[:8]
+name = "map-project-admin-control-isolation-" + uuid.uuid4().hex[:8]
 password = secrets.token_urlsafe(32)
 env = {**os.environ, "POSTGRES_PASSWORD": password}
 checks = {}
@@ -62,7 +62,7 @@ try:
         checks["target_failure_is_503"] = client.get("/api/v1/db/tables").status_code == 503
         checks["control_survives_target_failure"] = client.get("/health/ready").status_code == 200 and client.get("/api/v1/auth/me").status_code == 200
         checks["logout_after_target_failure"] = client.post("/api/v1/auth/logout").status_code == 204
-    result = {"scope":"local synthetic dedicated PostgreSQL; no GCP changes", "container":name, "checks":checks, "overall":all(checks.values())}
+    result = {"scope":"local synthetic dedicated PostgreSQL; no existing database touched", "container":name, "checks":checks, "overall":all(checks.values())}
     print(json.dumps(result, indent=2))
     if not result["overall"]: sys.exit(1)
 except Exception as exc:
