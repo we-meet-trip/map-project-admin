@@ -97,7 +97,8 @@ async def probe(provider: str) -> dict[str, Any]:
             ) as client:
                 ok, detail = await _probe_http(client, provider)
     except Exception as exc:
-        ok, detail = False, {"error": type(exc).__name__, "msg": str(exc)}
+        # 예외 문장에는 요청 주소(쿼리의 키 포함)가 섞일 수 있어 이름만 남긴다.
+        ok, detail = False, {"error": type(exc).__name__}
     return {
         "provider": provider,
         "ok": ok,

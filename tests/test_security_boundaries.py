@@ -246,3 +246,18 @@ def test_session_cookie_is_secure_by_default(monkeypatch):
     from map_project_admin.config import Settings
     monkeypatch.delenv("ADMIN_SESSION_COOKIE_SECURE", raising=False)
     assert Settings(_env_file=None).ADMIN_SESSION_COOKIE_SECURE is True
+
+
+# ── 외부 API 수동 점검의 실패 응답 ─────────────────────────────────
+
+def test_external_probe_failure_keeps_only_the_error_type(monkeypatch):
+    """예외 문장(요청 주소·키가 섞일 수 있음)은 응답과 감사 어디에도 싣지 않는다."""
+    from map_project_admin import external_status
+
+    async def broken(client, provider):
+        raise RuntimeError("GET https://example.invalid/?serviceKey=synthetic-secret failed")
+    monkeypatch.setattr(external_status, "_probe_http", broken)
+    result = asyncio.run(external_status.probe("kma"))
+    assert result["ok"] is False
+    assert result["detail"] == {"error": "RuntimeError"}
+    assert "synthetic-secret" not in repr(result)
