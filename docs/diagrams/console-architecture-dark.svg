@@ -27,8 +27,7 @@
 <title>browser&#45;&gt;web</title>
 <path fill="none" stroke="#8b949e" stroke-width="1.2" d="M68.24,-376.66C95.65,-382.81 135.28,-391.7 168.59,-399.17"/>
 <polygon fill="#8b949e" stroke="#8b949e" stroke-width="1.2" points="167.77,-401.5 175.14,-400.64 168.84,-396.72 167.77,-401.5"/>
-<text xml:space="preserve" text-anchor="middle" x="150.5" y="-379.31" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#e6edf3">HTTPS</text>
-<text xml:space="preserve" text-anchor="middle" x="150.5" y="-366.56" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#e6edf3">(로컬은 http)</text>
+<text xml:space="preserve" text-anchor="middle" x="109.97" y="-409.36" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#e6edf3">HTTPS (로컬은 http)</text>
 </g>
 <!-- grafana -->
 <g id="node13" class="node">
@@ -42,7 +41,7 @@
 <title>browser&#45;&gt;grafana</title>
 <path fill="none" stroke="#8b949e" stroke-width="1.2" stroke-dasharray="5,2" d="M68.24,-361.91C93.32,-356.41 128.65,-348.66 159.99,-341.79"/>
 <polygon fill="#8b949e" stroke="#8b949e" stroke-width="1.2" points="160.2,-344.26 166.52,-340.36 159.15,-339.47 160.2,-344.26"/>
-<text xml:space="preserve" text-anchor="middle" x="144.76" y="-354.14" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#e6edf3">iframe · 링크</text>
+<text xml:space="preserve" text-anchor="middle" x="105.18" y="-325.09" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#e6edf3">iframe · 링크</text>
 </g>
 <!-- api -->
 <g id="node3" class="node">
@@ -116,8 +115,7 @@
 <title>api&#45;&gt;user</title>
 <path fill="none" stroke="#8b949e" stroke-width="1.2" d="M507.63,-335.1C551.25,-342.17 612.37,-352.08 658.57,-359.56"/>
 <polygon fill="#8b949e" stroke="#8b949e" stroke-width="1.2" points="657.92,-361.94 665.22,-360.64 658.7,-357.1 657.92,-361.94"/>
-<text xml:space="preserve" text-anchor="middle" x="568.29" y="-338.53" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#e6edf3">관리 위임</text>
-<text xml:space="preserve" text-anchor="middle" x="568.29" y="-325.78" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#e6edf3">전용 토큰</text>
+<text xml:space="preserve" text-anchor="middle" x="597.26" y="-363.66" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#e6edf3">관리 위임 · 전용 토큰</text>
 </g>
 <!-- hub -->
 <g id="node8" class="node">
@@ -131,8 +129,7 @@
 <title>api&#45;&gt;hub</title>
 <path fill="none" stroke="#8b949e" stroke-width="1.2" d="M507.63,-317.5C557.23,-309.64 629.46,-298.21 676.64,-290.73"/>
 <polygon fill="#8b949e" stroke="#8b949e" stroke-width="1.2" points="676.83,-293.19 683.36,-289.67 676.06,-288.35 676.83,-293.19"/>
-<text xml:space="preserve" text-anchor="middle" x="577.45" y="-293.91" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#e6edf3">관리 위임</text>
-<text xml:space="preserve" text-anchor="middle" x="577.45" y="-281.16" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#e6edf3">전용 토큰</text>
+<text xml:space="preserve" text-anchor="middle" x="615.42" y="-280.16" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#e6edf3">관리 위임 · 전용 토큰</text>
 </g>
 <!-- agent -->
 <g id="node9" class="node">

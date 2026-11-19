@@ -24,18 +24,18 @@ digraph console {
   prom      [label="Prometheus\n(기본 꺼짐)", style="rounded,filled,dashed", color="@OPT_EDGE@", fillcolor="@OPT_FILL@"];
   grafana   [label="Grafana 등\n연동 슬롯 (기본 꺼짐)", style="rounded,filled,dashed", color="@OPT_EDGE@", fillcolor="@OPT_FILL@"];
 
-  browser -> web      [xlabel="HTTPS\n(로컬은 http)"];
+  browser -> web      [taillabel="HTTPS (로컬은 http)", labeldistance=5.5, labelangle=28];
   web     -> api      [xlabel="/api/ 프록시"];
   api     -> control  [xlabel="읽기 · 쓰기"];
   api     -> target   [xlabel="SELECT"];
   api     -> redis    [xlabel="개수 · 길이"];
-  api     -> user     [xlabel="관리 위임\n전용 토큰"];
-  api     -> hub      [xlabel="관리 위임\n전용 토큰"];
+  api     -> user     [headlabel="관리 위임 · 전용 토큰", labeldistance=7, labelangle=-14];
+  api     -> hub      [headlabel="관리 위임 · 전용 토큰", labeldistance=7, labelangle=14];
   api     -> agent    [xlabel="헬스"];
   api     -> osrm     [headlabel="헬스 · 수동 점검", labeldistance=6, labelangle=-28, style=dashed];
   api     -> external [xlabel="수동 점검 1회\n사용자 키", style=dashed];
   prom    -> api      [taillabel="/metrics 수집", labeldistance=4.5, labelangle=-40, style=dashed];
-  browser -> grafana  [xlabel="iframe · 링크", style=dashed];
+  browser -> grafana  [taillabel="iframe · 링크", labeldistance=5, labelangle=-30, style=dashed];
 
   { rank=same; control; target; redis; }
   { rank=same; user; hub; agent; osrm; external; }
