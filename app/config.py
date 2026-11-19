@@ -51,7 +51,8 @@ class Settings(BaseSettings):
         env_file=".env", env_file_encoding="utf-8", extra="ignore"
     )
 
-    # Explicit central runtime DSN. Legacy co-host deployments may keep ADMIN_DATABASE_URL.
+    # 중앙 모드: 계정·세션·감사를 둘 control DB 의 런타임 DSN.
+    # 비워 두면 단일 호스트 모드로, ADMIN_DATABASE_URL 하나를 control 과 기본 대상이 함께 쓴다.
     ADMIN_CONTROL_DATABASE_URL: str = ""
     ADMIN_DATABASE_URL: str = ""
     ADMIN_ENVIRONMENT: str = Field(default="test", pattern=r"^[a-z][a-z0-9_-]{0,31}$")
@@ -170,7 +171,8 @@ def select_environment(name: str):
             raise ValueError("unknown or invalid environment")
         if control_settings.ADMIN_CONTROL_DATABASE_URL:
             raise ValueError("environment connection settings incomplete")
-        # Transitional co-host contract only; explicit central mode never falls back.
+        # 단일 호스트 모드: control 설정을 기본 대상 설정으로 그대로 쓴다.
+        # 중앙 모드(control DSN 설정)에서는 위에서 거부되므로 이 경로로 오지 않는다.
         selected = control_settings
     else:
         if set(overrides) - _TARGET_FIELDS:
