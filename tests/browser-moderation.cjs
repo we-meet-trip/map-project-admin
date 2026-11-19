@@ -36,8 +36,8 @@ const server = http.createServer(async (req, res) => {
 });
 (async () => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-  // Without MAP_TEST_BROWSER, Playwright resolves its own installed browser.
-  const executable = process.env.MAP_TEST_BROWSER ? { executablePath: process.env.MAP_TEST_BROWSER } : {};
+  // Without ADMIN_TEST_BROWSER, Playwright resolves its own installed browser.
+  const executable = process.env.ADMIN_TEST_BROWSER ? { executablePath: process.env.ADMIN_TEST_BROWSER } : {};
   const browser = await chromium.launch({ ...executable, headless: true });
   const url = `http://127.0.0.1:${server.address().port}/moderation`;
   const page = await browser.newPage({ viewport: { width: 1400, height: 1100 } });
@@ -56,7 +56,7 @@ const server = http.createServer(async (req, res) => {
     await page.getByText('현재 상태: 조치 완료 / HIDE_CHAT_MESSAGE', { exact: true }).waitFor();
     assert.equal(calls.length, 2); assert.equal(calls[0].action_id, calls[1].action_id);
     assert.equal(calls[0].action, 'HIDE_CHAT_MESSAGE');
-    if (process.env.MAP_MODERATION_SCREENSHOT) await page.screenshot({ path: process.env.MAP_MODERATION_SCREENSHOT, fullPage: true });
+    if (process.env.ADMIN_TEST_SCREENSHOT) await page.screenshot({ path: process.env.ADMIN_TEST_SCREENSHOT, fullPage: true });
     await page.getByRole('button', { name: '원문 닫기', exact: true }).click();
     await page.getByText('Synthetic report description', { exact: true }).waitFor({ state: 'detached' });
     role = 'viewer'; state = 'OPEN'; resolution = null;

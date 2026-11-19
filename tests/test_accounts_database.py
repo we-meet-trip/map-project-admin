@@ -13,9 +13,9 @@ from map_project_admin.config import control_settings, reset_environment, select
 from map_project_admin.db import dispose_engine, get_control_engine
 
 
-@pytest.mark.skipif(not os.getenv("MAP_ADMIN_ISOLATED_TEST_DATABASE_URL"), reason="isolated PostgreSQL not configured")
+@pytest.mark.skipif(not os.getenv("ADMIN_TEST_DATABASE_URL"), reason="isolated PostgreSQL not configured")
 def test_permissions_sessions_rate_limit_and_environment_audit(monkeypatch):
-    monkeypatch.setattr(control_settings, "ADMIN_DATABASE_URL", os.environ["MAP_ADMIN_ISOLATED_TEST_DATABASE_URL"])
+    monkeypatch.setattr(control_settings, "ADMIN_DATABASE_URL", os.environ["ADMIN_TEST_DATABASE_URL"])
     monkeypatch.setattr(control_settings, "ADMIN_LOGIN_MAX_ATTEMPTS", 3)
     monkeypatch.setattr(control_settings, "ADMIN_TARGETS", {"prod": {
         "ADMIN_DATABASE_URL": control_settings.ADMIN_DATABASE_URL,
