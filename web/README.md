@@ -1,4 +1,4 @@
-# MAP 운영 콘솔 (map-admin-web)
+# MAP 운영 콘솔 (map-project-admin-web)
 
 MAP 백엔드 운영자용 관리 콘솔 SPA. `map-project-admin` JSON API를 소비하는 읽기 우선 대시보드이며, 모든 쓰기 액션은 확인 다이얼로그를 거쳐 서버 측 감사 로그에 기록됩니다.
 
@@ -37,7 +37,7 @@ npm run typecheck  # 타입 검사만
 프로덕션은 nginx가 정적 빌드를 서빙하고, 같은 오리진의 `/api/`를 admin 컨테이너(`admin:8000`)로 프록시합니다. 세션 쿠키(`admin_session`, HttpOnly)는 same-origin이므로 그대로 전달됩니다.
 
 ```bash
-docker build -t map-admin-web .
+docker build -t map-project-admin-web .
 ```
 
 - `Dockerfile`: `node:22-alpine`에서 `npm ci && npm run build` → `nginx:alpine`에 `dist/`와 `nginx.conf` 복사. 두 베이스 이미지 모두 멀티아치라 amd64·arm64 호스트에서 빌드된다.
