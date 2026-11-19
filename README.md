@@ -80,7 +80,8 @@ docker exec map-admin-db psql -U postgres -c "CREATE SCHEMA admin_data"
 # 3) 설정: 예시를 복사하고 두 값을 채운다
 cp .env.example .env
 #   ADMIN_DATABASE_URL=postgresql+psycopg://postgres:<위 PGPW 값>@127.0.0.1:55432/postgres
-#   ADMIN_BOOTSTRAP_PASSWORD=<12자 이상 아무 값>   (최초 owner 계정 admin 의 비밀번호)
+#   ADMIN_BOOTSTRAP_PASSWORD=<최초 owner 계정 admin 의 비밀번호 — 12자 이상을 권한다>
+#     (최초 계정 생성은 비었는지만 검사한다. 운영자 화면에서 바꾸는 비밀번호는 12자 이상이어야 한다)
 
 # 4) 마이그레이션(Alembic 은 .env 를 직접 읽지 않으므로 먼저 내보낸다) → API 기동
 set -a; . ./.env; set +a
