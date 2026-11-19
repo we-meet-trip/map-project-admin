@@ -15,14 +15,14 @@
 | console-architecture | 노드 hub | 위임 경로 `/internal/*` | `map_project_admin/hub_client.py:19`, `:25` | 코드 읽기 |
 | console-architecture | 노드 agent | 헬스 점검만 한다 | `map_project_admin/health_client.py:31` | 코드 읽기 |
 | console-architecture | 노드 OSRM(기본 꺼짐) | 도보·자전거 두 프로필, 함께 띄우는 구성에서 기본으로 켜지지 않는다 | `map_project_admin/health_client.py:119-125`, map-project-infra `docker-compose.yml` 의 `osrm-foot`·`osrm-bicycle` `profiles: ["routing"]` | compose 렌더 |
-| console-architecture | 노드 외부 API | 기상청·카카오·네이버·두루누비·Gemini(OSRM 은 별도 노드) | `map_project_admin/external_status.py:25`, `:132`, `:145`, `:161`, `:184` | 코드 읽기 |
+| console-architecture | 노드 외부 API | 기상청·카카오·네이버·두루누비·Gemini(OSRM 은 별도 노드) | `map_project_admin/external_status.py:25`, 카카오 `:132`, 네이버 `:145`, 기상청 `:161`, 두루누비 `:184`, Gemini `:90-91`(`map_project_admin/gemini_client.py` 의 `check_gemini`) | 코드 읽기 |
 | console-architecture | 노드 Prometheus(기본 꺼짐) | 모니터링 구성을 켤 때만 뜬다 | map-project-infra `docker-compose.admin.yml` 의 `prometheus` `profiles: ["monitoring"]` | compose 렌더 |
 | console-architecture | 노드 Grafana 등(기본 꺼짐) | 설정했을 때만 화면에 iframe·링크로 붙는다 | `map_project_admin/config.py:19`, `:36`, `web/src/pages/MonitoringPage.tsx:73` | 코드 읽기 |
 | console-architecture | 엣지 브라우저→admin-web | HTTPS, 로컬 실행만 http(세션 쿠키 Secure 기본) | `map_project_admin/routers/auth_router.py:41-43`, `.env.example` 의 `ADMIN_SESSION_COOKIE_SECURE` | `tests/test_security_boundaries.py::test_session_cookie_is_secure_by_default` |
 | console-architecture | 엣지 admin-web→admin API | `/api/` 만 프록시 | `web/nginx.conf:24-26` | 코드 읽기 |
 | console-architecture | 엣지 admin API→control DB | 읽기·쓰기(control 엔진) | `map_project_admin/db.py:14` | `scripts/verify-control-isolation.py` |
 | console-architecture | 엣지 admin API→대상 DB | SELECT 만(읽기 전용 트랜잭션) | `map_project_admin/db.py:22` | 코드 읽기 |
-| console-architecture | 엣지 admin API→Redis | 키 개수·스트림 길이·쿼터 | `map_project_admin/redis_probe.py:114-116` | 코드 읽기 |
+| console-architecture | 엣지 admin API→Redis | 키 개수·스트림 길이·쿼터 | 스트림 `map_project_admin/redis_probe.py:37`, 쿼터 `:74`, 캐시 키 개수 `:114-116` | 코드 읽기, `tests/test_security_boundaries.py::test_redis_error_is_unavailable_not_empty_queue` |
 | console-architecture | 엣지 admin API→user | 관리 위임, 전용 토큰 | `map_project_admin/upstream.py:57`, `:60` | `tests/test_admin_credential_isolation.py::test_all_bff_operations_use_dedicated_management_credential` |
 | console-architecture | 엣지 admin API→hub | 관리 위임, 전용 토큰 | `map_project_admin/upstream.py:57`, `:73` | `tests/test_admin_credential_isolation.py::test_all_hub_operations_use_dedicated_management_credential` |
 | console-architecture | 엣지 admin API→agent | 헬스 | `map_project_admin/health_client.py:31` | 코드 읽기 |
