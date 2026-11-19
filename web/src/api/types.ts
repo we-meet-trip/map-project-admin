@@ -30,16 +30,6 @@ export interface HealthItem {
   configured?: boolean | null;
 }
 
-export interface HealthResponse {
-  services: HealthItem[];
-}
-
-export interface PollingBucket {
-  last_base_at?: string | null;
-  last_tm_fc?: string | null;
-  rows: number;
-}
-
 export interface PollingData {
   grids: { active_grids: number; total_grids: number };
   short_term: { last_base_at: string | null; rows: number };
@@ -74,11 +64,6 @@ export interface GeminiQuota {
   daily_cap: number;
   daily_remaining: number;
   rpm_bucket: number | string | null;
-}
-
-export interface GeminiData {
-  connection: { ok: boolean; [key: string]: JsonValue };
-  quota: GeminiQuota;
 }
 
 export interface StreamRef {

@@ -1,4 +1,4 @@
-import { apiUrl, buildQuery, del, get, patch, post, put } from './client';
+import { apiUrl, buildQuery, del, get, patch, post } from './client';
 import type { QueryParams } from './client';
 import type {
   AuditResponse,
@@ -11,9 +11,7 @@ import type {
   ExternalData,
   ForbiddenZone,
   ForecastRowsData,
-  GeminiData,
   GridPatchResult,
-  HealthResponse,
   JobItem,
   JobsStats,
   KmaRunResult,
@@ -23,7 +21,6 @@ import type {
   PlacesStats,
   PollingData,
   ProbeResult,
-  StreamsData,
   UserDetail,
   UserListItem,
   ZoneDeleteResult,
@@ -42,12 +39,9 @@ export const authApi = {
 
 export const opsApi = {
   overview: () => get<OverviewData>('/v1/ops/overview'),
-  health: () => get<HealthResponse>('/v1/ops/health'),
   polling: () => get<PollingData>('/v1/ops/polling'),
   forecastRows: () => get<ForecastRowsData>('/v1/ops/forecast-rows'),
   placesStats: () => get<PlacesStats>('/v1/ops/places-stats'),
-  gemini: () => get<GeminiData>('/v1/ops/gemini'),
-  streams: () => get<StreamsData>('/v1/ops/streams'),
   external: () => get<ExternalData>('/v1/ops/external'),
   probe: (provider: string) =>
     post<ProbeResult>(`/v1/ops/external/${encodeURIComponent(provider)}/probe`),
@@ -139,11 +133,6 @@ export const actionsApi = {
   listZones: () => get<ForbiddenZone[]>('/v1/actions/forbidden-zones'),
   createZone: (payload: ZonePayload) =>
     post<ForbiddenZone>('/v1/actions/forbidden-zones', payload),
-  updateZone: (id: number | string, payload: ZonePayload) =>
-    put<ForbiddenZone>(
-      `/v1/actions/forbidden-zones/${encodeURIComponent(String(id))}`,
-      payload,
-    ),
   deleteZone: (id: number | string) =>
     del<ZoneDeleteResult>(
       `/v1/actions/forbidden-zones/${encodeURIComponent(String(id))}`,
