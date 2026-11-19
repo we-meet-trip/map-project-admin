@@ -53,7 +53,8 @@ try:
     from fastapi.testclient import TestClient
     from map_project_admin.main import app
     from map_project_admin.config import control_settings
-    with TestClient(app, raise_server_exceptions=False) as client:
+    # https base URL: the session cookie is Secure by default and is only sent back over HTTPS.
+    with TestClient(app, base_url="https://testserver", raise_server_exceptions=False) as client:
         checks["control_bootstrap_ready"] = client.get("/health/ready").status_code == 200
         checks["login_without_target"] = client.post("/api/v1/auth/login", json={"username":"synthetic-owner", "password":password}).status_code == 200
         checks["me_without_target"] = client.get("/api/v1/auth/me").status_code == 200
