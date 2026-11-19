@@ -134,7 +134,7 @@ pip install -r requirements.txt -r requirements-dev.txt
 pytest -q                                  # 외부 네트워크·DB 없이 돈다
 (cd web && npm ci && npm run build)        # 타입 검사 + 빌드
 ```
-- 공개 전에 확인한 결과: `pytest -q` 91 통과·1 건너뜀(Python 3.10~3.14 동일), 웹 빌드 통과.
+- 공개 전에 확인한 결과: `pytest -q` 92 통과·1 건너뜀(Python 3.10~3.14 동일), 웹 빌드 통과.
 - 건너뛰는 1개는 격리된 PostgreSQL 이 필요한 시험이다: `ADMIN_TEST_DATABASE_URL` 에 새로 마이그레이션한 DB(owner 계정 1개 포함)를 주면 돈다. 공유 서버에는 돌리지 않는다.
 - 격리 통합 점검: `python scripts/verify-control-isolation.py` — Docker 로 새 tmpfs PostgreSQL 을 띄워 control DB 역할 분리와 대상 장애 시 로그인 유지를 12개 항목으로 확인하고 지운다(`postgis/postgis:17-3.5` 이미지가 미리 있어야 한다). CI 에서는 `integration.yml` 이 돌린다.
 - 브라우저 점검: `node tests/browser-moderation.cjs` — `web/dist` 빌드와 `playwright-core` 가 필요한 수동 점검이다. 합성 HTTP 응답으로 신고 화면의 원문 이스케이프·역할별 버튼·재시도 UUID 를 본다. `ADMIN_TEST_BROWSER`(브라우저 실행 파일), `ADMIN_TEST_SCREENSHOT`(스크린샷 경로)을 줄 수 있다.
