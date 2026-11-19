@@ -72,7 +72,7 @@ class Settings(BaseSettings):
     # 터널(HTTPS) 배포 시 True. loopback dev 는 False(쿠키 전송 허용).
     ADMIN_SESSION_COOKIE_SECURE: bool = False
 
-    # [CORS] dev SPA origin 목록(JSON 배열 또는 콤마구분). 프로덕션은 nginx
+    # [CORS] dev SPA origin 목록. JSON 배열만 받는다(콤마 구분·빈 값은 기동 오류). 프로덕션은 nginx
     # same-origin 프록시라 비워 둔다. 세션 쿠키를 위해 allow_credentials=True.
     ADMIN_CORS_ORIGINS: list[str] = []
 
