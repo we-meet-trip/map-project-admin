@@ -61,7 +61,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(
     title="map-project-admin",
-    version="0.2.0-cut2",
+    version="1.0.0",
     lifespan=lifespan,
     docs_url=None,
     redoc_url=None,
