@@ -29,8 +29,8 @@ def _client(db: int) -> aioredis.Redis:
     return aioredis.from_url(
         f"{base}/{db}",
         decode_responses=True,
-        socket_timeout=settings.REDIS_TIMEOUT_SEC,
-        socket_connect_timeout=settings.REDIS_TIMEOUT_SEC,
+        socket_timeout=settings.ADMIN_REDIS_TIMEOUT_SEC,
+        socket_connect_timeout=settings.ADMIN_REDIS_TIMEOUT_SEC,
     )
 
 
@@ -38,15 +38,15 @@ async def streams_overview() -> dict[str, Any]:
     """DB2 스트림 길이 + DLQ 길이 + done 그룹 PEL 요약."""
     if not settings.ADMIN_REDIS_URL:
         return {"error": "not_configured", "configured": False}
-    r = _client(settings.REDIS_DB_STREAMS)
+    r = _client(settings.MAP_PROJECT_REDIS_DB_STREAMS)
     try:
-        done_len = await r.xlen(settings.STREAM_DONE)
-        status_len = await r.xlen(settings.STREAM_STATUS)
-        dlq_len = await r.xlen(settings.STREAM_DLQ)
+        done_len = await r.xlen(settings.ADMIN_STREAM_DONE)
+        status_len = await r.xlen(settings.ADMIN_STREAM_STATUS)
+        dlq_len = await r.xlen(settings.MAP_PROJECT_STREAM_DLQ)
         pending: dict[str, Any]
         try:
             summary = await r.xpending(
-                settings.STREAM_DONE, settings.STREAM_GROUP
+                settings.ADMIN_STREAM_DONE, settings.MAP_PROJECT_STREAM_GROUP
             )
             # redis-py: {'pending': n, 'min': id, 'max': id, 'consumers':[...]}
             s = summary if isinstance(summary, dict) else {}
@@ -58,10 +58,10 @@ async def streams_overview() -> dict[str, Any]:
         except Exception as exc:  # NOGROUP 등
             pending = {"pending": None, "error": type(exc).__name__}
         return {
-            "done": {"stream": settings.STREAM_DONE, "length": done_len},
-            "status": {"stream": settings.STREAM_STATUS, "length": status_len},
-            "dlq": {"stream": settings.STREAM_DLQ, "length": dlq_len},
-            "group": settings.STREAM_GROUP,
+            "done": {"stream": settings.ADMIN_STREAM_DONE, "length": done_len},
+            "status": {"stream": settings.ADMIN_STREAM_STATUS, "length": status_len},
+            "dlq": {"stream": settings.MAP_PROJECT_STREAM_DLQ, "length": dlq_len},
+            "group": settings.MAP_PROJECT_STREAM_GROUP,
             "pending": pending,
         }
     except Exception as exc:
@@ -75,7 +75,7 @@ async def gemini_quota() -> dict[str, Any]:
     """DB3 Gemini 일일 사용량(KST) vs 상한 + RPM 토큰 버킷 스냅샷."""
     if not settings.ADMIN_REDIS_URL:
         return {"error": "not_configured", "configured": False}
-    r = _client(settings.REDIS_DB_RATELIMIT)
+    r = _client(settings.MAP_PROJECT_REDIS_DB_RATELIMIT)
     try:
         today = datetime.now(_KST).strftime("%Y%m%d")
         daily_key = f"gemini:daily:{today}"
@@ -85,8 +85,8 @@ async def gemini_quota() -> dict[str, Any]:
         return {
             "date_kst": today,
             "daily_used": used,
-            "daily_cap": settings.GEMINI_RPD_CAP,
-            "daily_remaining": max(0, settings.GEMINI_RPD_CAP - used),
+            "daily_cap": settings.MAP_PROJECT_GEMINI_RPD_CAP,
+            "daily_remaining": max(0, settings.MAP_PROJECT_GEMINI_RPD_CAP - used),
             "rpm_bucket": tokens or {},
         }
     except Exception as exc:
@@ -108,7 +108,7 @@ async def cache_stats() -> dict[str, Any]:
     """DB4 외부 API 캐시 키 수(kakao/naver/osrm)."""
     if not settings.ADMIN_REDIS_URL:
         return {"error": "not_configured", "configured": False}
-    r = _client(settings.REDIS_DB_CACHE)
+    r = _client(settings.MAP_PROJECT_REDIS_DB_HUB_CACHE)
     try:
         return {
             "kakao_places": await _count_prefix(r, "kakao:places:*"),

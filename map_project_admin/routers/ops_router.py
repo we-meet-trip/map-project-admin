@@ -97,7 +97,7 @@ async def ops_external_probe(
 @router.get("/monitoring")
 async def ops_monitoring() -> dict:
     """외부 모니터링 연동 슬롯 목록(Grafana 등, config 기반)."""
-    return {"panels": [p.model_dump() for p in settings.MONITORING_PANELS]}
+    return {"panels": [p.model_dump() for p in settings.ADMIN_MONITORING_PANELS]}
 
 
 @router.get("/overview")

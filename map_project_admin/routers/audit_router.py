@@ -30,7 +30,7 @@ async def list_audit(
     offset: int = Query(0, ge=0),
 ) -> dict:
     """감사 로그 조회(필터 + 페이지네이션)."""
-    limit = min(limit, settings.DB_PAGE_SIZE_MAX)
+    limit = min(limit, settings.ADMIN_DB_PAGE_SIZE_MAX)
     return await audit.list_logs(
         actor=actor,
         action=action,

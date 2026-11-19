@@ -24,7 +24,7 @@ router = APIRouter(
 
 def _clamp_page(limit: int, offset: int) -> tuple[int, int]:
     """페이지 한도/오프셋 보정."""
-    limit = max(1, min(limit, settings.DB_PAGE_SIZE_MAX))
+    limit = max(1, min(limit, settings.ADMIN_DB_PAGE_SIZE_MAX))
     offset = max(0, offset)
     return limit, offset
 
@@ -86,7 +86,7 @@ async def db_export_csv(
     sort: str | None = Query(None),
     q: str | None = Query(None),
 ) -> StreamingResponse:
-    """현재 필터/정렬을 반영한 CSV 스트림(상한 DB_EXPORT_MAX_ROWS)."""
+    """현재 필터/정렬을 반영한 CSV 스트림(상한 ADMIN_DB_EXPORT_MAX_ROWS)."""
     await _require_hub_table(table)
     filters = _extract_filters(request)
 
@@ -96,7 +96,7 @@ async def db_export_csv(
         writer = csv.writer(buf)
         try:
             async for item in repo.iter_export_rows(
-                table, sort, q, filters, settings.DB_EXPORT_MAX_ROWS
+                table, sort, q, filters, settings.ADMIN_DB_EXPORT_MAX_ROWS
             ):
                 if header is None:
                     header = item  # 첫 yield 는 컬럼 헤더

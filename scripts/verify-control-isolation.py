@@ -59,7 +59,7 @@ try:
         checks["login_without_target"] = client.post("/api/v1/auth/login", json={"username":"synthetic-owner", "password":password}).status_code == 200
         checks["me_without_target"] = client.get("/api/v1/auth/me").status_code == 200
         checks["environments_without_target"] = client.get("/api/v1/environments").status_code == 200
-        control_settings.ADMIN_TARGETS = {"test": {"ADMIN_DATABASE_URL": "postgresql+psycopg://unavailable:unused@127.0.0.1:1/no_db", "ADMIN_REDIS_URL":"redis://127.0.0.1:1", "USER_BASE_URL":"http://127.0.0.1:1", "AGENT_BASE_URL":"http://127.0.0.1:1", "HUB_BASE_URL":"http://127.0.0.1:1", "INTERNAL_SERVICE_TOKEN":"synthetic"}}
+        control_settings.ADMIN_TARGETS = {"test": {"ADMIN_DATABASE_URL": "postgresql+psycopg://unavailable:unused@127.0.0.1:1/no_db", "ADMIN_REDIS_URL":"redis://127.0.0.1:1", "ADMIN_USER_BASE_URL":"http://127.0.0.1:1", "MAP_PROJECT_AGENT_BASE_URL":"http://127.0.0.1:1", "MAP_PROJECT_HUB_BASE_URL":"http://127.0.0.1:1", "MAP_PROJECT_INTERNAL_SERVICE_TOKEN":"synthetic"}}
         checks["target_failure_is_503"] = client.get("/api/v1/db/tables").status_code == 503
         checks["control_survives_target_failure"] = client.get("/health/ready").status_code == 200 and client.get("/api/v1/auth/me").status_code == 200
         checks["logout_after_target_failure"] = client.post("/api/v1/auth/logout").status_code == 204

@@ -30,7 +30,7 @@ cut 1 의 "단일 공유 HTTP Basic" 안은 폐기되었다.
 | `GET /ops/streams` | 세션 | 잡 스트림/DLQ/PEL 요약(Redis DB2) |
 | `GET /ops/external` | 세션 | 외부 API 6종 상태(configured/캐시/쿼터, 라이브 호출 없음) |
 | `POST /ops/external/{provider}/probe` | 세션 | 외부 API 수동 프로브(1회, audit 기록) |
-| `GET /ops/monitoring` | 세션 | Grafana 등 연동 슬롯(MONITORING_PANELS) |
+| `GET /ops/monitoring` | 세션 | Grafana 등 연동 슬롯(ADMIN_MONITORING_PANELS) |
 | `GET /db/tables` · `/db/tables/{t}/schema` · `/db/tables/{t}` | 세션 | 테이블 목록/스키마/행(정렬·검색·필터) |
 | `GET /db/tables/{t}/export.csv` | 세션 | 현재 필터/정렬 반영 CSV |
 | `GET /users` · `/users/{id}` | 세션 | 회원 목록(마스킹)/상세(원문, 열람 audit) — BFF 위임 |
@@ -74,8 +74,8 @@ admin(8002 API) + admin-web(8003 SPA)은 infra 의 **별도 스택**
 
 ```bash
 # 1) infra/.env 에 admin 키 추가 (.env.example 참고): ADMIN_DATABASE_URL /
-#    ADMIN_BOOTSTRAP_USER/PASSWORD / MAP_ADMIN_PASSWORD / INTERNAL_SERVICE_TOKEN /
-#    ADMIN_REDIS_URL / OSRM_*_BASE_URL / USER_BASE_URL / (외부 API 키)
+#    ADMIN_BOOTSTRAP_USER/PASSWORD / MAP_PROJECT_ADMIN_DB_PASSWORD / MAP_PROJECT_INTERNAL_SERVICE_TOKEN /
+#    ADMIN_REDIS_URL / OSRM_*_BASE_URL / ADMIN_USER_BASE_URL / (외부 API 키)
 # 2) map_admin 역할 + admin_data 소유 — db/init/10-admin.sh
 #    · 새 볼륨: postgres 최초 기동 시 자동
 #    · 기존 볼륨: docker compose exec postgres bash /docker-entrypoint-initdb.d/10-admin.sh

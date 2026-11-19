@@ -12,7 +12,7 @@ from map_project_admin.upstream import request_user_admin_json as request_json
 
 
 def _base() -> str:
-    return settings.USER_BASE_URL.rstrip("/")
+    return settings.ADMIN_USER_BASE_URL.rstrip("/")
 
 
 async def list_users(query: str | None, page: int, size: int) -> Any:

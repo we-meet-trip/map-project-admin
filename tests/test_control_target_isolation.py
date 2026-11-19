@@ -11,9 +11,9 @@ from map_project_admin.main import app
 
 
 def target(**overrides):
-    return {"ADMIN_REDIS_URL": "redis://target:6379", "USER_BASE_URL": "http://target-user:8080",
-            "AGENT_BASE_URL": "http://target-agent:8000", "HUB_BASE_URL": "http://target-hub:8000",
-            "INTERNAL_SERVICE_TOKEN": "target-token", **overrides}
+    return {"ADMIN_REDIS_URL": "redis://target:6379", "ADMIN_USER_BASE_URL": "http://target-user:8080",
+            "MAP_PROJECT_AGENT_BASE_URL": "http://target-agent:8000", "MAP_PROJECT_HUB_BASE_URL": "http://target-hub:8000",
+            "MAP_PROJECT_INTERNAL_SERVICE_TOKEN": "target-token", **overrides}
 
 
 def test_default_target_override_and_api_only_never_inherit_control(monkeypatch):
@@ -21,9 +21,9 @@ def test_default_target_override_and_api_only_never_inherit_control(monkeypatch)
     monkeypatch.setattr(control_settings, "ADMIN_TARGETS", {"test": target()})
     token = select_environment("test")
     try:
-        assert settings.USER_BASE_URL == "http://target-user:8080"
+        assert settings.ADMIN_USER_BASE_URL == "http://target-user:8080"
         assert settings.ADMIN_DATABASE_URL == ""
-        assert not settings.GEMINI_API_KEY.get_secret_value()
+        assert not settings.MAP_PROJECT_GEMINI_API_KEY.get_secret_value()
         with pytest.raises(HTTPException, match="target database not configured"):
             db.get_engine()
     finally:
@@ -32,7 +32,7 @@ def test_default_target_override_and_api_only_never_inherit_control(monkeypatch)
 
 def test_control_lifespan_and_login_survive_missing_or_invalid_default_target(monkeypatch):
     monkeypatch.setattr(control_settings, "ADMIN_CONTROL_DATABASE_URL", "postgresql+psycopg://control:x@control/admin")
-    monkeypatch.setattr(control_settings, "ADMIN_TARGETS", {"test": {"USER_BASE_URL": "http://invalid"}})
+    monkeypatch.setattr(control_settings, "ADMIN_TARGETS", {"test": {"ADMIN_USER_BASE_URL": "http://invalid"}})
     calls = []
     async def bootstrap(): calls.append("bootstrap")
     async def allowed(*_): return True

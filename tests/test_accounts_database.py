@@ -19,9 +19,9 @@ def test_permissions_sessions_rate_limit_and_environment_audit(monkeypatch):
     monkeypatch.setattr(control_settings, "ADMIN_LOGIN_MAX_ATTEMPTS", 3)
     monkeypatch.setattr(control_settings, "ADMIN_TARGETS", {"prod": {
         "ADMIN_DATABASE_URL": control_settings.ADMIN_DATABASE_URL,
-        "ADMIN_REDIS_URL": "redis://not-used:6379", "USER_BASE_URL": "http://not-used:8080",
-        "AGENT_BASE_URL": "http://not-used:8000", "HUB_BASE_URL": "http://not-used:8000",
-        "INTERNAL_SERVICE_TOKEN": "isolated-test-only",
+        "ADMIN_REDIS_URL": "redis://not-used:6379", "ADMIN_USER_BASE_URL": "http://not-used:8080",
+        "MAP_PROJECT_AGENT_BASE_URL": "http://not-used:8000", "MAP_PROJECT_HUB_BASE_URL": "http://not-used:8000",
+        "MAP_PROJECT_INTERNAL_SERVICE_TOKEN": "isolated-test-only",
     }})
 
     async def check():

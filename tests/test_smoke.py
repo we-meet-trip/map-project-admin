@@ -13,7 +13,7 @@ import os
 os.environ.setdefault(
     "ADMIN_DATABASE_URL", "postgresql+psycopg://map_admin:x@localhost:5432/map"
 )
-os.environ.setdefault("INTERNAL_SERVICE_TOKEN", "test-token")
+os.environ.setdefault("MAP_PROJECT_INTERNAL_SERVICE_TOKEN", "test-token")
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402

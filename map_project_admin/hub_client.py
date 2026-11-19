@@ -11,7 +11,7 @@ from map_project_admin.upstream import request_hub_admin_json as request_json
 
 
 def _base() -> str:
-    return settings.HUB_BASE_URL.rstrip("/")
+    return settings.MAP_PROJECT_HUB_BASE_URL.rstrip("/")
 
 
 async def kma_run_now(which: str) -> Any:

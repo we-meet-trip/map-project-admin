@@ -77,8 +77,8 @@ def test_target_scope_cannot_be_bypassed_by_owner_header_or_query(harness, monke
     assert client.get(BASE, headers=HEADERS).status_code == 403
     assert not state["calls"]
     monkeypatch.setattr(control_settings, "ADMIN_TARGETS", {"prod": {
-        "USER_BASE_URL": "https://private-prod.example", "HUB_BASE_URL": "https://private-hub.example",
-        "AGENT_BASE_URL": "https://private-agent.example", "INTERNAL_SERVICE_TOKEN": "synthetic-prod-token"}})
+        "ADMIN_USER_BASE_URL": "https://private-prod.example", "MAP_PROJECT_HUB_BASE_URL": "https://private-hub.example",
+        "MAP_PROJECT_AGENT_BASE_URL": "https://private-agent.example", "MAP_PROJECT_INTERNAL_SERVICE_TOKEN": "synthetic-prod-token"}})
     assert client.get(BASE, headers={"X-Map-Environment": "prod"}).status_code == 200
     assert state["calls"][-1][1].startswith("https://private-prod.example/internal/")
 

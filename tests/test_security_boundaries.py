@@ -70,21 +70,21 @@ def test_audit_failure_stops_upstream_action(client, monkeypatch):
 def test_parallel_environment_settings_do_not_mix(monkeypatch):
     monkeypatch.setattr(control_settings, "ADMIN_TARGETS", {"prod": {
         "ADMIN_DATABASE_URL": "postgresql+psycopg://readonly:x@prod/db",
-        "ADMIN_REDIS_URL": "redis://prod:6379", "USER_BASE_URL": "http://prod-user:8080",
-        "AGENT_BASE_URL": "http://prod-agent:8000", "HUB_BASE_URL": "http://prod-hub:8000",
-        "INTERNAL_SERVICE_TOKEN": "prod-only",
+        "ADMIN_REDIS_URL": "redis://prod:6379", "ADMIN_USER_BASE_URL": "http://prod-user:8080",
+        "MAP_PROJECT_AGENT_BASE_URL": "http://prod-agent:8000", "MAP_PROJECT_HUB_BASE_URL": "http://prod-hub:8000",
+        "MAP_PROJECT_INTERNAL_SERVICE_TOKEN": "prod-only",
     }})
     async def read(name):
         token = select_environment(name)
         try:
             await asyncio.sleep(0)
-            return settings.USER_BASE_URL, settings.GEMINI_API_KEY.get_secret_value()
+            return settings.ADMIN_USER_BASE_URL, settings.MAP_PROJECT_GEMINI_API_KEY.get_secret_value()
         finally: reset_environment(token)
     async def both(): return await asyncio.gather(read("test"), read("prod"))
     local, remote = asyncio.run(both())
-    assert local[0] == control_settings.USER_BASE_URL
+    assert local[0] == control_settings.ADMIN_USER_BASE_URL
     assert remote == ("http://prod-user:8080", "")
-    assert settings.USER_BASE_URL == control_settings.USER_BASE_URL
+    assert settings.ADMIN_USER_BASE_URL == control_settings.ADMIN_USER_BASE_URL
 
 
 def test_redis_error_is_unavailable_not_empty_queue(client, monkeypatch):

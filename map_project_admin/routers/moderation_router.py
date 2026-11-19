@@ -69,7 +69,7 @@ async def scope(request: Request, operator: str = Depends(require_operator)) -> 
 
 async def delegated(method: str, path: str, **kwargs):
     try:
-        return await request_json(method, settings.USER_BASE_URL.rstrip("/") + "/internal/admin/moderation/reports" + path, **kwargs)
+        return await request_json(method, settings.ADMIN_USER_BASE_URL.rstrip("/") + "/internal/admin/moderation/reports" + path, **kwargs)
     except UpstreamError as exc:
         # Upstream bodies may include report text. Never reflect them on errors.
         code = exc.status_code if exc.status_code in {400, 403, 404, 409, 429, 503} else 502

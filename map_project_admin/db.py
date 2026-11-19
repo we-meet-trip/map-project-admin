@@ -16,14 +16,14 @@ def get_engine(*, control: bool = False) -> AsyncEngine:
         raise HTTPException(503, "control database unavailable" if control else "target database not configured")
     key = (control, url)
     if key not in _engines:
-        timeout_ms = max(1, int(config.DB_TIMEOUT_SEC * 1000))
+        timeout_ms = max(1, int(config.ADMIN_DB_TIMEOUT_SEC * 1000))
         options = f"-c statement_timeout={timeout_ms} -c lock_timeout={timeout_ms}"
         if not control:
             options += " -c default_transaction_read_only=on"
         _engines[key] = create_async_engine(
             url, pool_size=3 if control else 2, max_overflow=0,
-            pool_timeout=config.DB_TIMEOUT_SEC, pool_pre_ping=True, future=True,
-            connect_args={"options": options, "connect_timeout": max(1, int(config.DB_TIMEOUT_SEC))},
+            pool_timeout=config.ADMIN_DB_TIMEOUT_SEC, pool_pre_ping=True, future=True,
+            connect_args={"options": options, "connect_timeout": max(1, int(config.ADMIN_DB_TIMEOUT_SEC))},
         )
     return _engines[key]
 

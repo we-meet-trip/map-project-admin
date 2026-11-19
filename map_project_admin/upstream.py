@@ -43,9 +43,9 @@ class UpstreamUnavailable(Exception):
 
 
 def _headers(*, user_admin: bool = False, hub_admin: bool = False) -> dict[str, str]:
-    ordinary = settings.INTERNAL_SERVICE_TOKEN.get_secret_value()
-    user_token = settings.USER_ADMIN_INTERNAL_TOKEN.get_secret_value()
-    hub_token = settings.HUB_ADMIN_INTERNAL_TOKEN.get_secret_value()
+    ordinary = settings.MAP_PROJECT_INTERNAL_SERVICE_TOKEN.get_secret_value()
+    user_token = settings.MAP_PROJECT_USER_ADMIN_INTERNAL_TOKEN.get_secret_value()
+    hub_token = settings.MAP_PROJECT_HUB_ADMIN_INTERNAL_TOKEN.get_secret_value()
     token = user_token if user_admin else hub_token if hub_admin else ordinary
     if user_admin or hub_admin:
         other = hub_token if user_admin else user_token
@@ -59,7 +59,7 @@ def _headers(*, user_admin: bool = False, hub_admin: bool = False) -> dict[str, 
 
 def _user_admin_url(url: str) -> bool:
     candidate = httpx.URL(url)
-    base = httpx.URL(settings.USER_BASE_URL.rstrip("/") + "/internal/admin/")
+    base = httpx.URL(settings.ADMIN_USER_BASE_URL.rstrip("/") + "/internal/admin/")
     return (candidate.scheme, candidate.host, candidate.port) == (base.scheme, base.host, base.port) and candidate.path.startswith(base.path) and not candidate.userinfo and not candidate.fragment and "%" not in candidate.raw_path.decode("ascii")
 
 
@@ -72,7 +72,7 @@ async def request_user_admin_json(method: str, url: str, **kwargs) -> Any:
 
 def _hub_admin_url(url: str) -> bool:
     candidate = httpx.URL(url)
-    base = httpx.URL(settings.HUB_BASE_URL.rstrip("/") + "/internal/")
+    base = httpx.URL(settings.MAP_PROJECT_HUB_BASE_URL.rstrip("/") + "/internal/")
     return ((candidate.scheme, candidate.host, candidate.port) == (base.scheme, base.host, base.port)
             and candidate.path.startswith(base.path) and not candidate.userinfo and not candidate.fragment
             and "%" not in candidate.raw_path.decode("ascii")
@@ -114,7 +114,7 @@ async def request_json(
         headers["X-Admin-Actor"] = admin_actor
     try:
         async with httpx.AsyncClient(
-            timeout=settings.INTERNAL_TIMEOUT_SEC, follow_redirects=False
+            timeout=settings.ADMIN_INTERNAL_TIMEOUT_SEC, follow_redirects=False
         ) as client:
             resp = await client.request(
                 method, url, params=params, json=json, headers=headers

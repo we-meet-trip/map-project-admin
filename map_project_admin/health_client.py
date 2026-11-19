@@ -4,9 +4,9 @@ HTTP 서비스(user/agent/hub) + 인프라(postgres/redis) + 라우팅(osrm-foot
 osrm-bicycle)의 up/down·지연을 모은다. 다운스트림이 죽어 있어도 예외로
 전파하지 않고 ok=false 로 집계한다(모니터링 화면이 부분 장애에도 렌더).
 
-  - user  : {USER_BASE_URL}/actuator/health  (Spring, {"status":"UP"})
-  - agent : {AGENT_BASE_URL}/health           (FastAPI, {"status":"ok"})
-  - hub   : {HUB_BASE_URL}/health             (FastAPI, {"status":"ok"})
+  - user  : {ADMIN_USER_BASE_URL}/actuator/health  (Spring, {"status":"UP"})
+  - agent : {MAP_PROJECT_AGENT_BASE_URL}/health           (FastAPI, {"status":"ok"})
+  - hub   : {MAP_PROJECT_HUB_BASE_URL}/health             (FastAPI, {"status":"ok"})
   - postgres : SELECT 1 (map_admin 엔진)
   - redis    : PING (ADMIN_REDIS_URL DB0)
   - osrm-*   : /nearest/v1/driving (base URL 설정 시에만; OSRM 은 /health 미제공)
@@ -27,9 +27,9 @@ from map_project_admin.db import get_engine
 # (표시명, base_url, health path)
 def _http_targets() -> list[tuple[str, str, str]]:
     return [
-    ("user", settings.USER_BASE_URL, "/actuator/health"),
-    ("agent", settings.AGENT_BASE_URL, "/health/ready"),
-    ("hub", settings.HUB_BASE_URL, "/health/ready"),
+    ("user", settings.ADMIN_USER_BASE_URL, "/actuator/health"),
+    ("agent", settings.MAP_PROJECT_AGENT_BASE_URL, "/health/ready"),
+    ("hub", settings.MAP_PROJECT_HUB_BASE_URL, "/health/ready"),
 ]
 
 
@@ -50,7 +50,7 @@ async def _check_http(
     """단일 HTTP 서비스 헬스 체크. 예외는 삼켜 ok=false."""
     url = f"{base.rstrip('/')}{path}"
     try:
-        resp = await client.get(url, timeout=settings.HEALTH_TIMEOUT_SEC)
+        resp = await client.get(url, timeout=settings.ADMIN_HEALTH_TIMEOUT_SEC)
         latency_ms = int(resp.elapsed.total_seconds() * 1000)
         try:
             body = resp.json()
@@ -98,8 +98,8 @@ async def _check_redis() -> dict[str, Any]:
     started = time.perf_counter()
     r = aioredis.from_url(
         settings.ADMIN_REDIS_URL,
-        socket_timeout=settings.REDIS_TIMEOUT_SEC,
-        socket_connect_timeout=settings.REDIS_TIMEOUT_SEC,
+        socket_timeout=settings.ADMIN_REDIS_TIMEOUT_SEC,
+        socket_connect_timeout=settings.ADMIN_REDIS_TIMEOUT_SEC,
     )
     try:
         await r.ping()
@@ -125,7 +125,7 @@ async def _check_osrm(
                 "configured": False, "latency_ms": None}
     url = f"{base.rstrip('/')}/nearest/v1/driving/126.9780,37.5665?number=1"
     try:
-        resp = await client.get(url, timeout=settings.HEALTH_TIMEOUT_SEC)
+        resp = await client.get(url, timeout=settings.ADMIN_HEALTH_TIMEOUT_SEC)
         latency_ms = int(resp.elapsed.total_seconds() * 1000)
         ok = False
         try:
@@ -152,9 +152,9 @@ async def rollup() -> list[dict[str, Any]]:
             _check_http(client, n, b, p) for (n, b, p) in _http_targets()
         ]
         osrm_checks = [
-            _check_osrm(client, "osrm-foot", settings.OSRM_FOOT_BASE_URL),
+            _check_osrm(client, "osrm-foot", settings.MAP_PROJECT_OSRM_FOOT_BASE_URL),
             _check_osrm(
-                client, "osrm-bicycle", settings.OSRM_BICYCLE_BASE_URL
+                client, "osrm-bicycle", settings.MAP_PROJECT_OSRM_BICYCLE_BASE_URL
             ),
         ]
         results = await asyncio.gather(

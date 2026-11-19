@@ -34,7 +34,7 @@ class MonitoringPanel(BaseModel):
     def _http_only(cls, v: str) -> str:
         """http/https 스킴만 허용(javascript: 등 iframe src 주입 차단)."""
         if not v.lower().startswith(("http://", "https://")):
-            raise ValueError("MONITORING_PANELS url must be http(s)")
+            raise ValueError("ADMIN_MONITORING_PANELS url must be http(s)")
         return v
 
     @field_validator("height")
@@ -61,7 +61,7 @@ class Settings(BaseSettings):
     ADMIN_LOGIN_MAX_ATTEMPTS: int = Field(default=10, ge=1, le=1000)
     ADMIN_LOGIN_WINDOW_SECONDS: int = Field(default=300, ge=1, le=86400)
     # 쿼리 statement timeout(초). 엔진 connect_args 에 반영(느린 조회 상한).
-    DB_TIMEOUT_SEC: float = 5.0
+    ADMIN_DB_TIMEOUT_SEC: float = 5.0
 
     # [인증 — 계정 세션] admin_accounts(bcrypt) + admin_sessions(HttpOnly 쿠키).
     # 최초 계정 시드: accounts 가 비었을 때만 아래 부트스트랩 자격으로 1회 생성.
@@ -78,57 +78,57 @@ class Settings(BaseSettings):
     ADMIN_CORS_ORIGINS: list[str] = []
 
     # [헬스 롤업 대상 — 컨테이너 내부 포트]
-    USER_BASE_URL: str = "http://user:8080"
-    AGENT_BASE_URL: str = "http://agent:8000"
-    HUB_BASE_URL: str = "http://hub:8000"
-    HEALTH_TIMEOUT_SEC: float = 3.0
+    ADMIN_USER_BASE_URL: str = "http://user:8080"
+    MAP_PROJECT_AGENT_BASE_URL: str = "http://agent:8000"
+    MAP_PROJECT_HUB_BASE_URL: str = "http://hub:8000"
+    ADMIN_HEALTH_TIMEOUT_SEC: float = 3.0
 
     # [OSRM 프로브] hub 와 동일 키 재사용. 비면 프로브 skip.
-    OSRM_FOOT_BASE_URL: str = ""
-    OSRM_BICYCLE_BASE_URL: str = ""
+    MAP_PROJECT_OSRM_FOOT_BASE_URL: str = ""
+    MAP_PROJECT_OSRM_BICYCLE_BASE_URL: str = ""
 
     # [Redis 진단 RO] 스트림/쿼터/캐시 조회. hub/BFF 와 동일 인스턴스.
     ADMIN_REDIS_URL: str = "redis://redis:6379"
-    REDIS_DB_STREAMS: int = 2
-    REDIS_DB_RATELIMIT: int = 3
-    REDIS_DB_CACHE: int = 4
+    MAP_PROJECT_REDIS_DB_STREAMS: int = 2
+    MAP_PROJECT_REDIS_DB_RATELIMIT: int = 3
+    MAP_PROJECT_REDIS_DB_HUB_CACHE: int = 4
     # 스트림/DLQ/컨슈머 이름(agent·BFF 규약과 일치).
-    STREAM_DONE: str = "agent:jobs:done"
-    STREAM_STATUS: str = "agent:jobs:status"
-    STREAM_DLQ: str = "agent:jobs:done:dlq"
-    STREAM_GROUP: str = "bff-result"
-    REDIS_TIMEOUT_SEC: float = 2.0
+    ADMIN_STREAM_DONE: str = "agent:jobs:done"
+    ADMIN_STREAM_STATUS: str = "agent:jobs:status"
+    MAP_PROJECT_STREAM_DLQ: str = "agent:jobs:done:dlq"
+    MAP_PROJECT_STREAM_GROUP: str = "bff-result"
+    ADMIN_REDIS_TIMEOUT_SEC: float = 2.0
 
     # [내부 위임] 일반 Hub와 User 관리자 권한은 별도 비밀이다.
-    INTERNAL_SERVICE_TOKEN: SecretStr = SecretStr("")
-    USER_ADMIN_INTERNAL_TOKEN: SecretStr = SecretStr("")
-    HUB_ADMIN_INTERNAL_TOKEN: SecretStr = SecretStr("")
-    INTERNAL_TIMEOUT_SEC: float = 5.0
+    MAP_PROJECT_INTERNAL_SERVICE_TOKEN: SecretStr = SecretStr("")
+    MAP_PROJECT_USER_ADMIN_INTERNAL_TOKEN: SecretStr = SecretStr("")
+    MAP_PROJECT_HUB_ADMIN_INTERNAL_TOKEN: SecretStr = SecretStr("")
+    ADMIN_INTERNAL_TIMEOUT_SEC: float = 5.0
 
     # [Gemini 연결 점검] 무료 메타 호출(models.list). 생성 미사용.
-    GEMINI_API_KEY: SecretStr = SecretStr("")
-    GEMINI_MODELS_URL: str = (
+    MAP_PROJECT_GEMINI_API_KEY: SecretStr = SecretStr("")
+    ADMIN_GEMINI_MODELS_URL: str = (
         "https://generativelanguage.googleapis.com/v1beta/models"
     )
-    GEMINI_TIMEOUT_SEC: float = 5.0
-    GEMINI_RPD_CAP: int = 200  # agent 의 일일 쿼터 상한(표시용)
+    ADMIN_GEMINI_TIMEOUT_SEC: float = 5.0
+    MAP_PROJECT_GEMINI_RPD_CAP: int = 200  # agent 의 일일 쿼터 상한(표시용)
 
     # [외부 API 키 존재 여부/프로브] hub 소유 키를 공유 .env 에서 읽어 상태
     # 표시·수동 프로브에 사용한다. 값은 마스킹해서만 노출한다.
-    KAKAO_REST_API_KEY: SecretStr = SecretStr("")
-    KMA_SERVICE_KEY: SecretStr = SecretStr("")
-    TOUR_API_SERVICE_KEY: SecretStr = SecretStr("")
-    NAVER_CLIENT_ID: SecretStr = SecretStr("")
-    NAVER_CLIENT_SECRET: SecretStr = SecretStr("")
-    EXTERNAL_PROBE_TIMEOUT_SEC: float = 6.0
+    MAP_PROJECT_KAKAO_REST_API_KEY: SecretStr = SecretStr("")
+    MAP_PROJECT_KMA_SERVICE_KEY: SecretStr = SecretStr("")
+    MAP_PROJECT_TOUR_API_SERVICE_KEY: SecretStr = SecretStr("")
+    MAP_PROJECT_NAVER_CLIENT_ID: SecretStr = SecretStr("")
+    MAP_PROJECT_NAVER_CLIENT_SECRET: SecretStr = SecretStr("")
+    ADMIN_EXTERNAL_PROBE_TIMEOUT_SEC: float = 6.0
 
     # [DB 뷰어(hub_data 한정)]
-    DB_PAGE_SIZE_DEFAULT: int = 50
-    DB_PAGE_SIZE_MAX: int = 500
-    DB_EXPORT_MAX_ROWS: int = 50000
+    ADMIN_DB_PAGE_SIZE_DEFAULT: int = 50
+    ADMIN_DB_PAGE_SIZE_MAX: int = 500
+    ADMIN_DB_EXPORT_MAX_ROWS: int = 50000
 
     # [외부 모니터링 연동 슬롯] Grafana 등 iframe/링크. JSON 배열.
-    MONITORING_PANELS: list[MonitoringPanel] = []
+    ADMIN_MONITORING_PANELS: list[MonitoringPanel] = []
 
 
 # 프로세스 단위 싱글톤. 다른 모듈은 이 객체를 직접 임포트한다.
@@ -137,15 +137,15 @@ _target_settings: ContextVar[Settings | None] = ContextVar("admin_target", defau
 _target_name: ContextVar[str | None] = ContextVar("admin_target_name", default=None)
 
 _TARGET_FIELDS = {
-    "ADMIN_DATABASE_URL", "ADMIN_REDIS_URL", "USER_BASE_URL", "AGENT_BASE_URL",
-    "HUB_BASE_URL", "OSRM_FOOT_BASE_URL", "OSRM_BICYCLE_BASE_URL",
-    "INTERNAL_SERVICE_TOKEN", "USER_ADMIN_INTERNAL_TOKEN", "HUB_ADMIN_INTERNAL_TOKEN", "GEMINI_API_KEY", "KAKAO_REST_API_KEY",
-    "KMA_SERVICE_KEY", "TOUR_API_SERVICE_KEY", "NAVER_CLIENT_ID",
-    "NAVER_CLIENT_SECRET", "MONITORING_PANELS", "GEMINI_RPD_CAP",
+    "ADMIN_DATABASE_URL", "ADMIN_REDIS_URL", "ADMIN_USER_BASE_URL", "MAP_PROJECT_AGENT_BASE_URL",
+    "MAP_PROJECT_HUB_BASE_URL", "MAP_PROJECT_OSRM_FOOT_BASE_URL", "MAP_PROJECT_OSRM_BICYCLE_BASE_URL",
+    "MAP_PROJECT_INTERNAL_SERVICE_TOKEN", "MAP_PROJECT_USER_ADMIN_INTERNAL_TOKEN", "MAP_PROJECT_HUB_ADMIN_INTERNAL_TOKEN", "MAP_PROJECT_GEMINI_API_KEY", "MAP_PROJECT_KAKAO_REST_API_KEY",
+    "MAP_PROJECT_KMA_SERVICE_KEY", "MAP_PROJECT_TOUR_API_SERVICE_KEY", "MAP_PROJECT_NAVER_CLIENT_ID",
+    "MAP_PROJECT_NAVER_CLIENT_SECRET", "ADMIN_MONITORING_PANELS", "MAP_PROJECT_GEMINI_RPD_CAP",
 }
 _TARGET_SECRETS = {
-    "INTERNAL_SERVICE_TOKEN", "USER_ADMIN_INTERNAL_TOKEN", "HUB_ADMIN_INTERNAL_TOKEN", "GEMINI_API_KEY", "KAKAO_REST_API_KEY",
-    "KMA_SERVICE_KEY", "TOUR_API_SERVICE_KEY", "NAVER_CLIENT_ID", "NAVER_CLIENT_SECRET",
+    "MAP_PROJECT_INTERNAL_SERVICE_TOKEN", "MAP_PROJECT_USER_ADMIN_INTERNAL_TOKEN", "MAP_PROJECT_HUB_ADMIN_INTERNAL_TOKEN", "MAP_PROJECT_GEMINI_API_KEY", "MAP_PROJECT_KAKAO_REST_API_KEY",
+    "MAP_PROJECT_KMA_SERVICE_KEY", "MAP_PROJECT_TOUR_API_SERVICE_KEY", "MAP_PROJECT_NAVER_CLIENT_ID", "MAP_PROJECT_NAVER_CLIENT_SECRET",
 }
 
 
@@ -178,15 +178,15 @@ def select_environment(name: str):
     else:
         if set(overrides) - _TARGET_FIELDS:
             raise ValueError("unknown or invalid environment")
-        required = {"USER_BASE_URL", "AGENT_BASE_URL",
-                    "HUB_BASE_URL", "INTERNAL_SERVICE_TOKEN"}
+        required = {"ADMIN_USER_BASE_URL", "MAP_PROJECT_AGENT_BASE_URL",
+                    "MAP_PROJECT_HUB_BASE_URL", "MAP_PROJECT_INTERNAL_SERVICE_TOKEN"}
         if any(not overrides.get(key) for key in required):
             raise ValueError("environment connection settings incomplete")
         values = control_settings.model_dump()
         values.update({key: "" for key in _TARGET_SECRETS})
         # DB is optional for API-only targets. Never inherit the control/co-host DSN.
-        values.update({"ADMIN_DATABASE_URL": "", "ADMIN_REDIS_URL": "", "OSRM_FOOT_BASE_URL": "",
-                       "OSRM_BICYCLE_BASE_URL": "", "MONITORING_PANELS": []})
+        values.update({"ADMIN_DATABASE_URL": "", "ADMIN_REDIS_URL": "", "MAP_PROJECT_OSRM_FOOT_BASE_URL": "",
+                       "MAP_PROJECT_OSRM_BICYCLE_BASE_URL": "", "ADMIN_MONITORING_PANELS": []})
         values.update(overrides)
         selected = Settings.model_validate(values)
     return _target_settings.set(selected), _target_name.set(name)

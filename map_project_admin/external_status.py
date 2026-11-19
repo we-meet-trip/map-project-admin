@@ -36,12 +36,12 @@ def _mask(secret: str) -> str:
 
 async def status_snapshot() -> dict[str, Any]:
     """라이브 호출 없이 provider 별 상태(configured/키마스킹) + 캐시/쿼터."""
-    kakao = settings.KAKAO_REST_API_KEY.get_secret_value()
-    kma = settings.KMA_SERVICE_KEY.get_secret_value()
-    tour = settings.TOUR_API_SERVICE_KEY.get_secret_value()
-    nid = settings.NAVER_CLIENT_ID.get_secret_value()
-    nsec = settings.NAVER_CLIENT_SECRET.get_secret_value()
-    gem = settings.GEMINI_API_KEY.get_secret_value()
+    kakao = settings.MAP_PROJECT_KAKAO_REST_API_KEY.get_secret_value()
+    kma = settings.MAP_PROJECT_KMA_SERVICE_KEY.get_secret_value()
+    tour = settings.MAP_PROJECT_TOUR_API_SERVICE_KEY.get_secret_value()
+    nid = settings.MAP_PROJECT_NAVER_CLIENT_ID.get_secret_value()
+    nsec = settings.MAP_PROJECT_NAVER_CLIENT_SECRET.get_secret_value()
+    gem = settings.MAP_PROJECT_GEMINI_API_KEY.get_secret_value()
 
     cache = await redis_probe.cache_stats()
     quota = await redis_probe.gemini_quota()
@@ -67,7 +67,7 @@ async def status_snapshot() -> dict[str, Any]:
         },
         {
             "provider": "osrm", "label": "OSRM 라우팅",
-            "configured": bool(settings.OSRM_FOOT_BASE_URL),
+            "configured": bool(settings.MAP_PROJECT_OSRM_FOOT_BASE_URL),
             "cache_keys": cache.get("osrm"),
         },
         {
@@ -93,7 +93,7 @@ async def probe(provider: str) -> dict[str, Any]:
             detail = res
         else:
             async with httpx.AsyncClient(
-                timeout=settings.EXTERNAL_PROBE_TIMEOUT_SEC
+                timeout=settings.ADMIN_EXTERNAL_PROBE_TIMEOUT_SEC
             ) as client:
                 ok, detail = await _probe_http(client, provider)
     except Exception as exc:
@@ -124,9 +124,9 @@ async def _probe_http(
 
 
 async def _probe_kakao(client: httpx.AsyncClient) -> tuple[bool, Any]:
-    key = settings.KAKAO_REST_API_KEY.get_secret_value()
+    key = settings.MAP_PROJECT_KAKAO_REST_API_KEY.get_secret_value()
     if not key:
-        return False, {"error": "KAKAO_REST_API_KEY unset"}
+        return False, {"error": "MAP_PROJECT_KAKAO_REST_API_KEY unset"}
     resp = await client.get(
         "https://dapi.kakao.com/v2/local/search/keyword.json",
         params={"query": "서울", "size": 1},
@@ -136,8 +136,8 @@ async def _probe_kakao(client: httpx.AsyncClient) -> tuple[bool, Any]:
 
 
 async def _probe_naver(client: httpx.AsyncClient) -> tuple[bool, Any]:
-    nid = settings.NAVER_CLIENT_ID.get_secret_value()
-    nsec = settings.NAVER_CLIENT_SECRET.get_secret_value()
+    nid = settings.MAP_PROJECT_NAVER_CLIENT_ID.get_secret_value()
+    nsec = settings.MAP_PROJECT_NAVER_CLIENT_SECRET.get_secret_value()
     if not (nid and nsec):
         return False, {"error": "NAVER credentials unset"}
     resp = await client.get(
@@ -149,9 +149,9 @@ async def _probe_naver(client: httpx.AsyncClient) -> tuple[bool, Any]:
 
 
 async def _probe_kma(client: httpx.AsyncClient) -> tuple[bool, Any]:
-    key = settings.KMA_SERVICE_KEY.get_secret_value()
+    key = settings.MAP_PROJECT_KMA_SERVICE_KEY.get_secret_value()
     if not key:
-        return False, {"error": "KMA_SERVICE_KEY unset"}
+        return False, {"error": "MAP_PROJECT_KMA_SERVICE_KEY unset"}
     # 어제 05시 발표분을 조회. NO_DATA(03)도 키 정상으로 간주(연결/키 검증 목적).
     from datetime import datetime, timedelta, timezone
 
@@ -176,9 +176,9 @@ async def _probe_kma(client: httpx.AsyncClient) -> tuple[bool, Any]:
 
 
 async def _probe_durunubi(client: httpx.AsyncClient) -> tuple[bool, Any]:
-    key = settings.TOUR_API_SERVICE_KEY.get_secret_value()
+    key = settings.MAP_PROJECT_TOUR_API_SERVICE_KEY.get_secret_value()
     if not key:
-        return False, {"error": "TOUR_API_SERVICE_KEY unset"}
+        return False, {"error": "MAP_PROJECT_TOUR_API_SERVICE_KEY unset"}
     resp = await client.get(
         "https://apis.data.go.kr/B551011/Durunubi/routeList",
         params={
@@ -197,9 +197,9 @@ async def _probe_durunubi(client: httpx.AsyncClient) -> tuple[bool, Any]:
 
 
 async def _probe_osrm(client: httpx.AsyncClient) -> tuple[bool, Any]:
-    base = settings.OSRM_FOOT_BASE_URL
+    base = settings.MAP_PROJECT_OSRM_FOOT_BASE_URL
     if not base:
-        return False, {"error": "OSRM_FOOT_BASE_URL unset"}
+        return False, {"error": "MAP_PROJECT_OSRM_FOOT_BASE_URL unset"}
     resp = await client.get(
         f"{base.rstrip('/')}/nearest/v1/driving/126.9780,37.5665?number=1"
     )

@@ -46,7 +46,7 @@ export function MonitoringPage() {
           <EmptyState
             icon={<IconMonitor width={32} height={32} />}
             title="구성된 패널이 없습니다"
-            message="MONITORING_PANELS 환경변수로 대시보드 패널을 구성하면 이곳에 표시됩니다."
+            message="ADMIN_MONITORING_PANELS 환경변수로 대시보드 패널을 구성하면 이곳에 표시됩니다."
           />
         </Card>
       ) : (
