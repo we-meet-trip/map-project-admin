@@ -44,7 +44,7 @@
   }
 }
 ```
-`.env` 에는 한 줄 JSON 으로 넣는다. 빈 값(`ADMIN_TARGETS=`)은 기동 오류다([T-CFG-01](troubleshooting.md#t-cfg-01)).
+`.env` 에는 한 줄 JSON 으로 넣는다. 빈 값(`ADMIN_TARGETS=`)은 설정하지 않은 것(`{}`)으로 본다([T-CFG-01](troubleshooting.md#t-cfg-01)).
 
 ## 3. 모듈 역할
 | 모듈 | 역할 |

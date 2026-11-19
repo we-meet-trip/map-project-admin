@@ -108,7 +108,7 @@ cd web && npm ci && npm run dev
 | `MAP_PROJECT_USER_ADMIN_INTERNAL_TOKEN`·`MAP_PROJECT_HUB_ADMIN_INTERNAL_TOKEN` | 관리 전용 토큰(비었거나 일반 토큰과 같으면 관리 호출을 보내지 않는다) |
 | `ADMIN_CONTROL_DATABASE_URL`·`ADMIN_TARGETS` | 중앙 모드(전용 control DB, 여러 환경) — [docs/architecture.md](docs/architecture.md) "실행 모드" |
 
-목록·사전형 값(`ADMIN_CORS_ORIGINS`·`ADMIN_TARGETS`·`ADMIN_MONITORING_PANELS`)은 JSON 으로만 쓴다. 빈 값(`KEY=`)은 기동 오류다.
+빈 값(`KEY=`)은 설정하지 않은 것으로 보고 기본값을 쓴다. 목록·사전형 값(`ADMIN_CORS_ORIGINS`·`ADMIN_TARGETS`·`ADMIN_MONITORING_PANELS`)은 JSON 으로만 쓴다(콤마 구분은 기동 오류).
 
 ## 데이터
 이 저장소는 데이터셋을 담지 않는다. admin 이 소유한 테이블과 감사 기록에 남기는 것·남기지 않는 것은 [docs/data.md](docs/data.md) 에 있다.

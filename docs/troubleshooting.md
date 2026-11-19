@@ -25,10 +25,10 @@
 **목록·사전형 환경변수를 빈 값으로 두면 기동 즉시 실패**
 - 증상: `.env` 에 `ADMIN_MONITORING_PANELS=`, `ADMIN_CORS_ORIGINS=`, `ADMIN_TARGETS=` 처럼 값 없이 키만 두면 프로세스가 `pydantic_settings.exceptions.SettingsError: error parsing value for field "…"` 로 바로 끝난다. `ADMIN_CORS_ORIGINS=http://a,http://b` 같은 콤마 구분도 같은 오류가 난다.
 - 원인: pydantic-settings 는 `list[...]`·`dict[...]` 타입 환경변수를 JSON 으로만 읽는다. 빈 문자열과 콤마 구분 문자열은 JSON 이 아니다(`map_project_admin/config.py` 의 `Settings`).
-- 해결: 쓰지 않는 키는 줄을 지우거나 주석으로 둔다. 값을 줄 때는 JSON 으로 쓴다 — `ADMIN_CORS_ORIGINS=["http://localhost:5173"]`, `ADMIN_TARGETS={}`, `ADMIN_MONITORING_PANELS=[]`.
-- 검증: 위 세 키에 빈 값·콤마 구분·JSON 을 각각 넣고 `Settings()` 를 만들어 보면 JSON 만 통과한다.
-- 교훈: 여러 서비스가 `.env` 하나를 나눠 쓰면 다른 서비스용으로 비워 둔 키가 이 서비스를 멈출 수 있다. 예시 파일에는 복합 타입 키를 주석으로만 둔다.
-- 관련 커밋: 없음(동작은 그대로 두고 설명을 바로잡았다).
+- 해결: 설정 로더가 빈 값을 설정하지 않은 것으로 보게 했다(`SettingsConfigDict(env_ignore_empty=True)`) — 빈 값이면 기본값을 쓴다. 대상 환경 설정(`ADMIN_TARGETS` 안의 빈 값)은 환경변수가 아니라 그대로 미구성으로 남는다. 값을 줄 때는 여전히 JSON 으로 쓴다 — `ADMIN_CORS_ORIGINS=["http://localhost:5173"]`. 콤마 구분은 지금도 기동 오류다.
+- 검증: `tests/test_settings.py::test_empty_environment_values_fall_back_to_defaults`(목록·사전·불리언·숫자 빈 값 → 기본값). 고치기 전 설정에서는 실패한다.
+- 교훈: 여러 서비스가 `.env`·compose 하나를 나눠 쓰면 다른 서비스용으로 비워 둔 키가 이 서비스를 멈출 수 있다. 같은 뿌리의 문제가 다른 서비스의 불리언 설정에서도 통합 실행 중에 드러났다.
+- 관련 커밋: {{commit:a6954e4}}
 
 ### T-DB-01
 **대상 환경 장애가 로그인·준비 상태까지 막음**

@@ -76,7 +76,7 @@ class Settings(BaseSettings):
     # False 로 바꾼다(.env.example 참고).
     ADMIN_SESSION_COOKIE_SECURE: bool = True
 
-    # [CORS] 화면을 다른 출처에서 띄울 때의 origin 목록. JSON 배열만 받는다(콤마 구분·빈 값은 기동 오류).
+    # [CORS] 화면을 다른 출처에서 띄울 때의 origin 목록. JSON 배열만 받는다(콤마 구분은 기동 오류, 빈 값은 기본값).
     # nginx 뒤나 Vite 개발 서버(프록시)는 브라우저 입장에서 같은 출처라 비워 둔다.
     # 쓸 때는 세션 쿠키를 위해 allow_credentials=True 로 연다.
     ADMIN_CORS_ORIGINS: list[str] = []
