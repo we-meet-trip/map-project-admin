@@ -1,0 +1,43 @@
+#!/bin/sh
+# docs/diagrams/src 의 원본에서 라이트·다크 SVG 와 PNG 를 모두 다시 만든다.
+# 필요: Graphviz(dot), rsvg-convert, python3, Pretendard 글꼴(SIL OFL — 저장소에는 넣지 않는다).
+# 쓰임: sh scripts/render_diagrams.sh
+set -eu
+cd "$(dirname "$0")/.."
+SRC=docs/diagrams/src
+OUT=docs/diagrams
+
+theme() {  # $1 = light | dark — @토큰@ 을 팔레트(DIAGRAM 규칙)로 바꾼다.
+  if [ "$1" = light ]; then
+    sed -e 's/@BG@/#FFFFFF/g' -e 's/@FG@/#1F2328/g' -e 's/@LINE@/#57606A/g' \
+        -e 's/@SVC_FILL@/#DDF4FF/g' -e 's/@SVC_EDGE@/#0969DA/g' \
+        -e 's/@DB_FILL@/#FFF8C5/g' -e 's/@DB_EDGE@/#9A6700/g' \
+        -e 's/@EXT_FILL@/#F6F8FA/g' -e 's/@EXT_EDGE@/#57606A/g' \
+        -e 's/@OPT_FILL@/#FBEFFF/g' -e 's/@OPT_EDGE@/#8250DF/g'
+  else
+    sed -e 's/@BG@/#0D1117/g' -e 's/@FG@/#E6EDF3/g' -e 's/@LINE@/#8B949E/g' \
+        -e 's/@SVC_FILL@/#0C2D6B/g' -e 's/@SVC_EDGE@/#58A6FF/g' \
+        -e 's/@DB_FILL@/#3B2E00/g' -e 's/@DB_EDGE@/#D29922/g' \
+        -e 's/@EXT_FILL@/#161B22/g' -e 's/@EXT_EDGE@/#8B949E/g' \
+        -e 's/@OPT_FILL@/#2B1D3D/g' -e 's/@OPT_EDGE@/#A371F7/g'
+  fi
+}
+
+for f in "$SRC"/*.dot; do
+  [ -e "$f" ] || continue
+  name=$(basename "$f" .dot)
+  for t in light dark; do
+    theme "$t" < "$f" | dot -Tsvg -o "$OUT/$name-$t.svg"
+  done
+done
+
+for f in "$SRC"/*.seq.json; do
+  [ -e "$f" ] || continue
+  python3 scripts/seq.py "$f" "$OUT/$(basename "$f" .seq.json)"
+done
+
+for svg in "$OUT"/*-light.svg "$OUT"/*-dark.svg; do
+  [ -e "$svg" ] || continue
+  rsvg-convert -w 1600 "$svg" -o "${svg%.svg}.png"
+done
+echo "rendered: $(ls "$OUT"/*.svg | wc -l | tr -d ' ') svg, $(ls "$OUT"/*.png | wc -l | tr -d ' ') png"

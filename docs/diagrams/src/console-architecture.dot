@@ -1,0 +1,42 @@
+// 운영 콘솔 구성. 색은 @토큰@ 으로 두고 scripts/render_diagrams.sh 가 라이트·다크로 바꾼다.
+digraph console {
+  graph [rankdir=LR, bgcolor="@BG@", fontname="Pretendard, Noto Sans KR, sans-serif", fontcolor="@FG@",
+         nodesep=0.6, ranksep=1.4, pad=0.4, splines=spline, forcelabels=true, labelloc=t, fontsize=18,
+         label="운영 콘솔 구성 (map-project-admin)"];
+  node  [shape=box, style="rounded,filled", fontname="Pretendard, Noto Sans KR, sans-serif", fontsize=12,
+         fontcolor="@FG@", color="@SVC_EDGE@", fillcolor="@SVC_FILL@", penwidth=1.4, margin="0.18,0.10"];
+  edge  [color="@LINE@", fontcolor="@FG@", fontname="Pretendard, Noto Sans KR, sans-serif", fontsize=10,
+         arrowsize=0.7, penwidth=1.2];
+
+  browser   [label="브라우저\n운영자", style="rounded,filled,dashed", color="@EXT_EDGE@", fillcolor="@EXT_FILL@"];
+  web       [label="admin-web\nnginx · 정적 SPA"];
+  api       [label="admin API\nFastAPI · /api/v1"];
+
+  control   [label="control DB\nadmin_data\n계정 · 세션 · 감사", shape=cylinder, color="@DB_EDGE@", fillcolor="@DB_FILL@"];
+  target    [label="대상 DB\nhub_data (읽기 전용)", shape=cylinder, color="@DB_EDGE@", fillcolor="@DB_FILL@"];
+  redis     [label="Redis\n스트림 · 쿼터 · 캐시 (읽기 전용)", shape=cylinder, color="@DB_EDGE@", fillcolor="@DB_FILL@"];
+
+  user      [label="user\n/internal/admin/*"];
+  hub       [label="hub\n/internal/*"];
+  agent     [label="agent\n헬스만"];
+  osrm      [label="OSRM 도보 · 자전거\n(기본 꺼짐)", style="rounded,filled,dashed", color="@OPT_EDGE@", fillcolor="@OPT_FILL@"];
+  external  [label="외부 API\n기상청 · 카카오 · 네이버 · 두루누비 · Gemini", style="rounded,filled,dashed", color="@EXT_EDGE@", fillcolor="@EXT_FILL@"];
+  prom      [label="Prometheus\n(기본 꺼짐)", style="rounded,filled,dashed", color="@OPT_EDGE@", fillcolor="@OPT_FILL@"];
+  grafana   [label="Grafana 등\n연동 슬롯 (기본 꺼짐)", style="rounded,filled,dashed", color="@OPT_EDGE@", fillcolor="@OPT_FILL@"];
+
+  browser -> web      [xlabel="HTTPS\n(로컬은 http)"];
+  web     -> api      [xlabel="/api/ 프록시"];
+  api     -> control  [xlabel="읽기 · 쓰기"];
+  api     -> target   [xlabel="SELECT"];
+  api     -> redis    [xlabel="개수 · 길이"];
+  api     -> user     [xlabel="관리 위임\n전용 토큰"];
+  api     -> hub      [xlabel="관리 위임\n전용 토큰"];
+  api     -> agent    [xlabel="헬스"];
+  api     -> osrm     [headlabel="헬스 · 수동 점검", labeldistance=6, labelangle=-28, style=dashed];
+  api     -> external [xlabel="수동 점검 1회\n사용자 키", style=dashed];
+  prom    -> api      [taillabel="/metrics 수집", labeldistance=4.5, labelangle=-40, style=dashed];
+  browser -> grafana  [xlabel="iframe · 링크", style=dashed];
+
+  { rank=same; control; target; redis; }
+  { rank=same; user; hub; agent; osrm; external; }
+}

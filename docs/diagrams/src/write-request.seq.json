@@ -1,0 +1,24 @@
+{
+  "title": "쓰기 요청 처리 순서 (예: 폴링 격자 토글)",
+  "lanes": [
+    {"id": "browser", "label": "브라우저", "sub": "admin-web"},
+    {"id": "api", "label": "admin API", "sub": "FastAPI"},
+    {"id": "control", "label": "control DB", "sub": "admin_data"},
+    {"id": "hub", "label": "hub", "sub": "/internal/*"}
+  ],
+  "steps": [
+    {"kind": "band", "text": "① 환경 선택과 인증"},
+    {"kind": "call", "from": "browser", "to": "api", "text": "PATCH /api/v1/actions/grids/{id} (세션 쿠키, X-Map-Environment 헤더)"},
+    {"kind": "self", "from": "api", "text": "환경 선택 → 세션 확인 → viewer 거부 → 헤더와 선택 환경 대조"},
+    {"kind": "band", "text": "② 쓰기 전 감사"},
+    {"kind": "call", "from": "api", "to": "control", "text": "감사 행 저장 (request.started)"},
+    {"kind": "ret", "from": "control", "to": "api", "text": "저장됨 — 실패하면 여기서 멈추고 위임하지 않는다"},
+    {"kind": "band", "text": "③ 소유 서비스에 위임"},
+    {"kind": "call", "from": "api", "to": "hub", "text": "PATCH /internal/grids/{id} · 허브 관리 전용 토큰"},
+    {"kind": "ret", "from": "hub", "to": "api", "text": "변경 전후 값 (실패는 고정 코드로 바꿈)"},
+    {"kind": "call", "from": "api", "to": "control", "text": "감사: 변경 전후 값 (grids.toggle)"},
+    {"kind": "call", "from": "api", "to": "control", "text": "request.started 행을 응답 상태코드로 마무리"},
+    {"kind": "band", "text": "④ 응답"},
+    {"kind": "ret", "from": "api", "to": "browser", "text": "200 · X-Map-Environment · Cache-Control: no-store"}
+  ]
+}
