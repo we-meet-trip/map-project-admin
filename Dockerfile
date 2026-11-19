@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.7
-# map-service-admin — FastAPI 운영 모니터링 백엔드 (cut 1)
+# map-service-admin — FastAPI 운영 콘솔 JSON API
 #
 # hub Dockerfile 의 멀티스테이지 규약을 미러링하되, PostGIS 컴파일
 # 의존성(libgeos/libproj, build-essential)은 불필요하므로 제외한다.

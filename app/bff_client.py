@@ -1,6 +1,6 @@
 """user-BFF `/internal/admin` 위임 클라이언트 (회원/추천작업/DLQ).
 
-admin 은 user_service 를 직접 조회하지 않고(경계 B9), user-BFF 의
+admin 은 user_service 를 직접 조회하지 않고(관리 콘솔 내부 API 경계), user-BFF 의
 /internal/admin/* 로 위임한다. 응답을 그대로 패스스루한다.
 """
 from __future__ import annotations

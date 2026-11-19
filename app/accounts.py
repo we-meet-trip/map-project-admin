@@ -1,7 +1,8 @@
 """운영자 계정·세션 (admin_data) — bcrypt + 서버측 세션.
 
 admin_accounts(bcrypt) 로 로그인하고 admin_sessions(HttpOnly 쿠키의 서버 대응
-레코드)로 상태를 유지한다. 초기 "단일 공유 HTTP Basic" 안은 폐기되었다(§0-B-3).
+레코드)로 상태를 유지한다. 운영자가 비밀번호 하나를 나눠 쓰는 HTTP Basic 대신
+운영자마다 계정으로 로그인한다.
 
 호출 관계:
   - app.main lifespan → bootstrap_if_empty (최초 계정 시드)

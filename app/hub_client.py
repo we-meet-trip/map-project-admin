@@ -1,6 +1,6 @@
 """hub `/internal` 위임 클라이언트 (KMA 강제갱신·격자 토글·금지구역 CRUD).
 
-admin 은 hub_data 를 직접 쓰지 않고(경계 B9), hub 의 /internal/* 로 위임한다.
+admin 은 hub_data 를 직접 쓰지 않고(관리 콘솔 내부 API 경계), hub 의 /internal/* 로 위임한다.
 """
 from __future__ import annotations
 

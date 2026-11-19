@@ -1,7 +1,7 @@
-"""Redis 진단 조회 (RO) — 스트림/DLQ/Gemini 쿼터/캐시 (cut 2).
+"""Redis 진단 조회 (RO) — 스트림/DLQ/Gemini 쿼터/캐시.
 
 admin 은 Redis 논리 DB 를 신규로 소유하지 않고, 기존 DB 를 진단 목적 RO 로
-조회만 한다(§0-B-5 예외):
+조회만 한다(값을 쓰거나 지우지 않는다):
   - DB2 스트림: agent:jobs:done / agent:jobs:status / DLQ 길이, done 그룹 PEL
   - DB3 Gemini 쿼터: gemini:daily:{KST} 사용량 vs 상한, gemini:tokens 버킷
   - DB4 캐시: kakao:places:* / naver:blog:* / osrm:* 키 수(값 미접근)

@@ -1,7 +1,7 @@
 """내부 위임 호출 공통 헬퍼 (hub/BFF `/internal`).
 
 admin 은 hub_data 쓰기·회원/잡/DLQ 조작을 소유 서비스 `/internal` 로 위임한다
-(경계 B9). 본 모듈은 X-Internal-Token 부착 + 상태코드 전파 + 연결오류 매핑을
+(관리 콘솔 내부 API 경계). 본 모듈은 X-Internal-Token 부착 + 상태코드 전파 + 연결오류 매핑을
 담당한다.
 
 에러 규약:

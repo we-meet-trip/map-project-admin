@@ -1,4 +1,4 @@
-"""Gemini 연결 상태 점검 (cut 1.5).
+"""Gemini 연결 상태 점검.
 
 Gemini(generateContent)는 agent 소유이지만, 운영자가 "연결/키가 살아있는가"
 를 볼 수 있도록 admin 이 **무료 메타 호출**(models.list)로 도달성+키 유효성만

@@ -1,11 +1,11 @@
-"""map-service-admin — 운영 콘솔 JSON API 서버 (cut 2).
+"""map-service-admin — 운영 콘솔 JSON API 서버.
 
 SPA(admin-web)가 소비하는 순수 JSON API 를 제공한다(UI 없음). 인증은
 admin_accounts(bcrypt) + 서버측 세션(HttpOnly 쿠키). 데이터 경로:
   - hub_data 읽기전용 직접(app.repo)
   - admin_data 소유 RW(app.accounts / app.audit)
   - Redis 진단 RO(app.redis_probe)
-  - hub/BFF `/internal` 위임(app.hub_client / app.bff_client) — 경계 B9
+  - hub/BFF `/internal` 위임(app.hub_client / app.bff_client) — 관리 콘솔 내부 API 경계
 
 라우터: auth · ops · db · users · jobs · actions · audit (전부 /api/v1).
 /health 는 인증 없음(compose healthcheck), /docs·/openapi 는 세션 보호.

@@ -1,7 +1,7 @@
-"""운영자 인증 — 서버측 세션(HttpOnly 쿠키) 의존성 (cut 2).
+"""운영자 인증 — 서버측 세션(HttpOnly 쿠키) 의존성.
 
-admin_accounts(bcrypt) + admin_sessions 기반. 초기 "단일 공유 HTTP Basic" 안은
-폐기되었다(§0-B-3). require_operator 는 요청 쿠키의 세션을 검증해 운영자
+admin_accounts(bcrypt) + admin_sessions 기반(공유 HTTP Basic 대신 운영자별 계정).
+require_operator 는 요청 쿠키의 세션을 검증해 운영자
 username 을 반환하고, 무효면 401 을 던진다. 감사 로그의 actor 가 이 username 이다.
 
 전제: admin API 는 loopback(8002) 바인딩. SPA(admin-web)는 nginx same-origin

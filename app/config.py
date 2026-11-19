@@ -1,9 +1,9 @@
-"""map-service-admin 환경설정 (cut 2 — 운영 콘솔 JSON API).
+"""map-service-admin 환경설정 (운영 콘솔 JSON API).
 
 다른 서비스(user/agent/hub)와 동일한 프로젝트 루트 `.env` 를 공유하므로
 `extra="ignore"` 로 무관한 키를 무시한다(hub/config.py 와 동일 규약).
 
-cut 2 범위: hub_data 읽기전용 + admin_data 소유 RW(감사/계정/세션) + Redis 진단
+범위: hub_data 읽기전용 + admin_data 소유 RW(감사/계정/세션) + Redis 진단
 RO(DB2 스트림·DB3 Gemini 쿼터·DB4 캐시) + hub/BFF `/internal` 위임 + 외부 API
 상태/프로브. 인증은 admin_accounts(bcrypt) + 서버측 세션(HttpOnly 쿠키).
 """

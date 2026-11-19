@@ -4,13 +4,13 @@
 Revision ID: 0002_create_admin_accounts_sessions
 Revises: 0001_create_audit_logs
 
-운영자 인증(SR-ADMIN-008)을 위한 계정·세션 테이블을 만든다.
+운영자 인증을 위한 계정·세션 테이블을 만든다.
   - admin_accounts : 운영자 계정(username + bcrypt password_hash).
   - admin_sessions : 서버측 세션(HttpOnly 쿠키의 서버 대응 레코드).
 
-인증 방식(§0-B-3): 초기 "단일 공유 HTTP Basic" 안은 폐기되고, 계정 기반
-세션 인증으로 대체되었다. 세션은 Redis 논리 DB 를 새로 쓰지 않고 본
-DB 테이블에 저장한다(§8.3 Redis 예약 보존).
+인증 방식: 운영자가 비밀번호 하나를 나눠 쓰는 HTTP Basic 대신 계정 기반
+세션 인증을 쓴다. 세션은 Redis 논리 DB 를 새로 쓰지 않고 본
+DB 테이블에 저장한다(Redis 논리 DB 번호는 다른 서비스가 쓰므로 새로 잡지 않는다).
 
 최초 계정은 admin 앱 기동 시 ADMIN_BOOTSTRAP_USER / ADMIN_BOOTSTRAP_PASSWORD
 로 시드된다(admin_accounts 가 비어 있을 때만 1회). 마이그레이션은 스키마만

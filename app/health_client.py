@@ -1,4 +1,4 @@
-"""서비스·인프라 헬스 롤업 (cut 2).
+"""서비스·인프라 헬스 롤업.
 
 HTTP 서비스(user/agent/hub) + 인프라(postgres/redis) + 라우팅(osrm-foot/
 osrm-bicycle)의 up/down·지연을 모은다. 다운스트림이 죽어 있어도 예외로

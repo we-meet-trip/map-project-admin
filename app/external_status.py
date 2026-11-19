@@ -1,4 +1,4 @@
-"""외부 API 상태·수동 프로브 (cut 2).
+"""외부 API 상태·수동 프로브.
 
 6종 provider(KMA·Kakao·Naver·Durunubi·OSRM·Gemini)의 상태를 표시하고,
 운영자가 명시적으로 요청할 때만 연결 프로브를 수행한다(자동 폴링 금지 —

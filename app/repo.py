@@ -1,4 +1,4 @@
-"""hub_data 읽기전용 조회 (cut 1 모니터링 소스).
+"""hub_data 읽기전용 조회 (모니터링·DB 뷰어 소스).
 
 모든 SQL 은 `hub_data.<table>` 로 완전수식하며 SELECT/집계만 수행한다.
 컬럼·인덱스는 hub 마이그레이션(001_create_tables, 004_create_places)의

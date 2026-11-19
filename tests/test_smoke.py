@@ -1,4 +1,4 @@
-"""admin cut 2 스모크 테스트 (세션 API).
+"""admin 스모크 테스트 (세션 API).
 
 DB/Redis/업스트림을 건드리지 않도록 각 데이터 모듈 함수를 monkeypatch 하고,
 세션 의존성(require_operator)은 dependency_overrides 로 대체한다. 실제 DB 통합

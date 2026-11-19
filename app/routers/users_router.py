@@ -53,7 +53,7 @@ async def get_user(
     request: Request,
     operator: str = Depends(require_operator),
 ) -> dict:
-    """회원 상세(원문 이메일). 열람 자체를 audit 에 기록한다(결정 #7).
+    """회원 상세(원문 이메일). 열람 자체를 audit 에 기록한다(회원 원문 열람은 감사 대상).
 
     읽기전용 운영자는 마스킹된 목록까지만 본다. 원문 이메일은 변경 권한과
     같은 등급으로 다룬다.
