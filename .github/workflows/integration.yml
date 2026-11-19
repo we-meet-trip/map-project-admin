@@ -1,0 +1,43 @@
+# 새로 띄운 시험용 PostgreSQL 컨테이너로 control DB 격리를 확인한다.
+#
+# 단위 시험(ci.yml)과 달리 Docker 와 공개 이미지 내려받기가 필요해 따로 둔다.
+# 시험 컨테이너는 tmpfs 위에서만 돌고 끝나면 멈춘다. 기존 데이터베이스나
+# 볼륨에는 붙지 않는다(scripts/verify-control-isolation.py).
+name: integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: integration-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  control-isolation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: isolated control database and target outage
+        run: |
+          docker pull postgis/postgis:17-3.5
+          python scripts/verify-control-isolation.py
