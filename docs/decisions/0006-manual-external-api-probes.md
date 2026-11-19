@@ -8,8 +8,8 @@
 2. 설정 여부만 자동 표시, 연결 점검은 버튼으로 1회
 
 ## 결정
-두 번째를 택했다. `GET /ops/external` 은 외부 호출 없이 설정 여부·마스킹한 키·캐시 키 수만 돌려주고, `POST /ops/external/{provider}/probe` 만 최소 요청 1회를 보내며 그 결과를 감사에 남긴다. Gemini 는 생성 호출 대신 모델 목록 조회로 키를 확인한다({{commit:8303617}}).
+두 번째를 택했다. `GET /ops/external` 은 외부 호출 없이 설정 여부·마스킹한 키·캐시 키 수만 돌려주고, `POST /ops/external/{provider}/probe` 만 최소 요청 1회를 보내며 그 결과를 감사에 남긴다. Gemini 는 생성 호출 대신 모델 목록 조회로 키를 확인한다([`53e1d4c`](https://github.com/we-meet-trip/map-project-admin/commit/53e1d4cceab5c093d0a3a90384282e355bd2621f)).
 
 ## 결과
 - 기본 동작이 비용을 쓰지 않는다. 점검은 사용하는 사람이 자기 키를 넣고 버튼을 눌렀을 때만 한다.
-- 점검 실패 결과에는 예외 이름만 남긴다({{commit:ec47d88}}).
+- 점검 실패 결과에는 예외 이름만 남긴다([`89fe4a7`](https://github.com/we-meet-trip/map-project-admin/commit/89fe4a70946b0eca0836953550e32dbcb63893a4)).

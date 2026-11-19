@@ -8,9 +8,9 @@
 2. 읽기만 직접, 쓰기와 회원 원문은 소유 서비스의 내부 API 로 위임한다.
 
 ## 결정
-두 번째를 택했다. `hub_data` 는 읽기 전용으로만 조회하고, 격자 토글·금지구역·기상청 갱신은 hub `/internal/*` 로, 회원·추천 작업·실패 큐·신고는 user `/internal/admin/*` 로 위임한다. `user_service` 에는 권한이 없다({{commit:8303617}}).
+두 번째를 택했다. `hub_data` 는 읽기 전용으로만 조회하고, 격자 토글·금지구역·기상청 갱신은 hub `/internal/*` 로, 회원·추천 작업·실패 큐·신고는 user `/internal/admin/*` 로 위임한다. `user_service` 에는 권한이 없다([`53e1d4c`](https://github.com/we-meet-trip/map-project-admin/commit/53e1d4cceab5c093d0a3a90384282e355bd2621f)).
 
 ## 결과
 - 쓰기 규칙은 소유 서비스 한 곳에만 있다.
 - 위임 경로마다 소유 서비스에 내부 API 가 있어야 한다.
-- 위임 실패 본문은 브라우저로 넘기지 않고 고정 코드로 바꾼다({{commit:f2a2e64}}).
+- 위임 실패 본문은 브라우저로 넘기지 않고 고정 코드로 바꾼다([`454b8af`](https://github.com/we-meet-trip/map-project-admin/commit/454b8af9ccee72d2dfad19ebe81e8a2d845d52b7)).

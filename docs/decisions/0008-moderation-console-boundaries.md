@@ -8,7 +8,7 @@
 2. 역할별로 열람·조치를 나누고 환경 선택을 강제
 
 ## 결정
-역할별로 나눈다: viewer 는 접수 메타데이터만, operator 는 원문 열람과 검토 조치(REVIEW·DISMISS·RESOLVE), owner 만 강제 조치(HIDE_CHAT_MESSAGE·RESTRICT_CHAT·LIFT_CHAT_RESTRICTION). owner 도 읽기부터 `X-Map-Environment` 를 명시해야 한다. 원문 열람 전에 감사를 저장하고, 감사와 user 에 보내는 행위자는 불투명한 `admin_<계정 id>` 다. 원문·응답 본문은 감사에 복사하지 않는다({{commit:fa27f17}}, {{commit:33918a2}}).
+역할별로 나눈다: viewer 는 접수 메타데이터만, operator 는 원문 열람과 검토 조치(REVIEW·DISMISS·RESOLVE), owner 만 강제 조치(HIDE_CHAT_MESSAGE·RESTRICT_CHAT·LIFT_CHAT_RESTRICTION). owner 도 읽기부터 `X-Map-Environment` 를 명시해야 한다. 원문 열람 전에 감사를 저장하고, 감사와 user 에 보내는 행위자는 불투명한 `admin_<계정 id>` 다. 원문·응답 본문은 감사에 복사하지 않는다([`7f9ccea`](https://github.com/we-meet-trip/map-project-admin/commit/7f9ccea5eecdf8463d34e44399dbe9727dc167da), [`bc036f3`](https://github.com/we-meet-trip/map-project-admin/commit/bc036f363bc977b797e4a7d06ae3e807e24b147e)).
 
 ## 결과
 - 감사 저장이 안 되면 원문도 보이지 않는다.

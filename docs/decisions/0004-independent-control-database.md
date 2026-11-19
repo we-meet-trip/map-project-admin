@@ -9,7 +9,7 @@
 3. 환경마다 콘솔을 따로 띄운다.
 
 ## 결정
-두 모드를 함께 둔다. `ADMIN_CONTROL_DATABASE_URL` 을 주면 중앙 모드로, 모든 대상을 `ADMIN_TARGETS` 에 명시하고 대상 설정은 control 의 비밀을 물려받지 않는다. 주지 않으면 단일 호스트 모드로, 빠른 시작에 쓴다. 인증·운영자 관리·준비 상태는 늘 control 만 쓴다({{commit:350593d}}, {{commit:2eb14ff}}).
+두 모드를 함께 둔다. `ADMIN_CONTROL_DATABASE_URL` 을 주면 중앙 모드로, 모든 대상을 `ADMIN_TARGETS` 에 명시하고 대상 설정은 control 의 비밀을 물려받지 않는다. 주지 않으면 단일 호스트 모드로, 빠른 시작에 쓴다. 인증·운영자 관리·준비 상태는 늘 control 만 쓴다([`fe5085e`](https://github.com/we-meet-trip/map-project-admin/commit/fe5085e4e21a7eda3aba85c422c99bcf2aea2383), [`06c9353`](https://github.com/we-meet-trip/map-project-admin/commit/06c9353d251ce27d0024fc462b6b3cc8cdfb1b8c)).
 
 ## 결과
 - 대상 장애 중에도 로그인·감사·로그아웃이 된다(`scripts/verify-control-isolation.py`).

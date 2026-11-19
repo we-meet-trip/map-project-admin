@@ -28,7 +28,7 @@
 - 해결: 설정 로더가 빈 값을 설정하지 않은 것으로 보게 했다(`SettingsConfigDict(env_ignore_empty=True)`) — 빈 값이면 기본값을 쓴다. 대상 환경 설정(`ADMIN_TARGETS` 안의 빈 값)은 환경변수가 아니라 그대로 미구성으로 남는다. 값을 줄 때는 여전히 JSON 으로 쓴다 — `ADMIN_CORS_ORIGINS=["http://localhost:5173"]`. 콤마 구분은 지금도 기동 오류다.
 - 검증: `tests/test_settings.py::test_empty_environment_values_fall_back_to_defaults`(목록·사전·불리언·숫자 빈 값 → 기본값). 고치기 전 설정에서는 실패한다.
 - 교훈: 여러 서비스가 `.env`·compose 하나를 나눠 쓰면 다른 서비스용으로 비워 둔 키가 이 서비스를 멈출 수 있다. 같은 뿌리의 문제가 다른 서비스의 불리언 설정에서도 통합 실행 중에 드러났다.
-- 관련 커밋: {{commit:a6954e4}}
+- 관련 커밋: [`d3a3a5d`](https://github.com/we-meet-trip/map-project-admin/commit/d3a3a5d353f8c9dd32b8b0f5e79a178f40d7bffc)
 
 ### T-DB-01
 **대상 환경 장애가 로그인·준비 상태까지 막음**
@@ -37,7 +37,7 @@
 - 해결: 계정·세션·감사는 독립 control DB(`ADMIN_CONTROL_DATABASE_URL`)에만 두고, 대상 DB 는 환경별 읽기 전용 풀로 분리했다. 인증·운영자 관리·`/health/ready` 요청은 대상을 고르지 않고 control 설정만 쓴다(`map_project_admin/main.py` 의 `target_environment` 미들웨어). 대상 연결은 control DSN 으로 되돌아가지 않는다.
 - 검증: `tests/test_control_target_isolation.py`(`test_control_lifespan_and_login_survive_missing_or_invalid_default_target` 등), 격리 통합 점검 `scripts/verify-control-isolation.py`(대상 장애 중에도 `/health/ready`·`/auth/me`·로그아웃이 정상).
 - 교훈: 관리 도구는 관리 대상이 망가졌을 때 가장 필요하다. 관리 도구 자신의 상태 저장소는 대상과 다른 장애 영역에 둔다.
-- 관련 커밋: {{commit:350593d}}, {{commit:7e30690}}
+- 관련 커밋: [`fe5085e`](https://github.com/we-meet-trip/map-project-admin/commit/fe5085e4e21a7eda3aba85c422c99bcf2aea2383), [`44079ef`](https://github.com/we-meet-trip/map-project-admin/commit/44079ef08144aabd37660aacbffe030d055322f0)
 
 ### T-DB-02
 **DB·Redis 자격이 없는 API 전용 대상이 거부됨**
@@ -46,7 +46,7 @@
 - 해결: 필수 키를 서비스 주소와 내부 토큰으로 줄였다. Redis 가 없으면 진단은 `{"error": "not_configured", "configured": false}` 를, SQL 화면은 503 을 돌려준다(`map_project_admin/redis_probe.py`, `map_project_admin/health_client.py`).
 - 검증: `tests/test_control_target_isolation.py::test_api_only_target_has_no_database_or_redis_fallback`
 - 교훈: "설정하지 않음" 은 오류가 아니라 하나의 정상 상태다. 상태 값을 참·거짓 둘로만 두면 이 상태를 표현할 수 없다.
-- 관련 커밋: {{commit:2eb14ff}}
+- 관련 커밋: [`06c9353`](https://github.com/we-meet-trip/map-project-admin/commit/06c9353d251ce27d0024fc462b6b3cc8cdfb1b8c)
 
 ### T-DB-03
 **기존 PostgreSQL 볼륨에서 띄우면 마이그레이션 단계에서 종료**
@@ -64,7 +64,7 @@
 - 해결: 예외 클래스 이름만 남긴다. `SQLAlchemyError` 는 전역 처리기가 고정 문구 `database unavailable`(503)로 바꾼다(`map_project_admin/main.py`).
 - 검증: `tests/test_security_boundaries.py::test_redis_error_is_unavailable_not_empty_queue`
 - 교훈: 예외 메시지는 사람이 읽으라고 만든 것이지만 그 안에 무엇이 들어갈지는 라이브러리가 정한다. 경계 밖으로는 내가 만든 문구만 보낸다.
-- 관련 커밋: {{commit:2eb14ff}}, {{commit:350593d}}
+- 관련 커밋: [`06c9353`](https://github.com/we-meet-trip/map-project-admin/commit/06c9353d251ce27d0024fc462b6b3cc8cdfb1b8c), [`fe5085e`](https://github.com/we-meet-trip/map-project-admin/commit/fe5085e4e21a7eda3aba85c422c99bcf2aea2383)
 
 ### T-SEC-02
 **업스트림 오류 본문이 브라우저까지 전달됨**
@@ -73,7 +73,7 @@
 - 해결: 상태코드만 전파하고 본문은 상태코드별 고정 코드·안내 문구로 바꾼다(`map_project_admin/upstream.py` 의 `UpstreamError`). 성공 응답이라도 형식이 깨졌으면 본문을 내보내지 않는다.
 - 검증: `tests/test_upstream_privacy.py`(`test_failure_body_is_never_forwarded`, `test_malformed_success_does_not_expose_body`, `test_exception_directly_created_by_caller_is_also_sanitized`), `tests/test_moderation.py::test_error_body_and_private_upstream_address_are_never_reflected`
 - 교훈: 프록시는 상대 서비스의 개인정보 정책까지 물려받는다. 그대로 전달하면 상대의 실수가 내 화면에서 새어 나간다.
-- 관련 커밋: {{commit:f2a2e64}}
+- 관련 커밋: [`454b8af`](https://github.com/we-meet-trip/map-project-admin/commit/454b8af9ccee72d2dfad19ebe81e8a2d845d52b7)
 
 ### T-SEC-03
 **일반 내부 토큰으로 관리 API 를 부를 수 있음**
@@ -82,7 +82,7 @@
 - 해결: 관리 호출에는 전용 자격(`MAP_PROJECT_USER_ADMIN_INTERNAL_TOKEN`, `MAP_PROJECT_HUB_ADMIN_INTERNAL_TOKEN`)만 쓴다. 전용 자격이 비었거나 일반 토큰·다른 관리 토큰과 같으면 네트워크 요청 전에 막는다. 관리 자격은 선택한 대상 주소와 정해진 경로에만 붙고, 리다이렉트를 따라가지 않으며, 대상 환경끼리 상속되지 않는다(`map_project_admin/upstream.py` 의 `_headers`).
 - 검증: `tests/test_admin_credential_isolation.py` 13개 시험(`test_missing_or_reused_admin_secret_never_opens_network`, `test_redirect_does_not_forward_management_credential`, `test_concurrent_environments_never_exchange_management_secrets` 등)
 - 교훈: 같은 비밀을 여러 용도로 쓰면 가장 약한 용도의 노출 범위가 전체 권한이 된다. user·hub 쪽도 같은 전용 자격을 요구하도록 함께 바꿨다.
-- 관련 커밋: {{commit:0b8df10}}, {{commit:f2a2e64}}
+- 관련 커밋: [`b42c361`](https://github.com/we-meet-trip/map-project-admin/commit/b42c361526c7736cfdf3aff0769afd94a141caad), [`454b8af`](https://github.com/we-meet-trip/map-project-admin/commit/454b8af9ccee72d2dfad19ebe81e8a2d845d52b7)
 
 ### T-SEC-04
 **회원 조회·로그인이 감사에 남지 않고 읽기 전용 운영자가 원문 이메일을 봄**
@@ -91,7 +91,7 @@
 - 해결: 목록 조회를 기록하되 검색어 원문은 빼고 검색 여부와 페이지 크기만 남긴다. 로그인 결과 세 가지와 로그아웃을 기록하고 비밀번호는 남기지 않는다. viewer 는 원문 상세를 받지 못한다. 감사 저장에 실패하면 요청도 실패한다(fail-closed).
 - 검증: `tests/test_security_boundaries.py`(`test_member_list_lookup_is_audited_without_the_search_text`, `test_viewer_cannot_read_the_raw_email_detail`, `test_operator_still_reads_the_raw_email_detail`, `test_login_records_success_failure_and_throttling`, `test_logout_records_only_a_real_session`)
 - 교훈: 감사를 fail-closed 로 바꾸면 감사 저장을 대역하지 않은 기존 시험이 503 으로 깨진다. 시험이 깨진 이유가 "새 잠금" 인지 "대역 누락" 인지 먼저 가른다. 과잉 차단을 막는 시험(운영자는 계속 열람 가능)을 같이 둔다.
-- 관련 커밋: {{commit:f200150}}
+- 관련 커밋: [`238017f`](https://github.com/we-meet-trip/map-project-admin/commit/238017f9bd94ac77c0cb186338142837d56fe5f5)
 
 ### T-SEC-05
 **외부 API 점검 실패 응답에 예외 문장이 실림**
@@ -100,7 +100,7 @@
 - 해결: 예외 이름만 남긴다(`map_project_admin/external_status.py` 의 `probe`). Gemini 점검과 Redis·DB 진단은 이미 같은 방식이었다.
 - 검증: `tests/test_security_boundaries.py::test_external_probe_failure_keeps_only_the_error_type` — 고치기 전 코드에서는 실패하고 고친 뒤 통과한다.
 - 교훈: 한 경로에서 고친 원문 노출은 같은 모양의 다른 경로에도 있는지 찾아본다([T-SEC-01](#t-sec-01)).
-- 관련 커밋: {{commit:ec47d88}}
+- 관련 커밋: [`89fe4a7`](https://github.com/we-meet-trip/map-project-admin/commit/89fe4a70946b0eca0836953550e32dbcb63893a4)
 
 ### T-AUTH-01
 **로그인 응답에 역할이 없어 화면 권한이 어긋남**
@@ -109,7 +109,7 @@
 - 해결: 로그인 응답에 `role` 을 넣었다(`map_project_admin/routers/auth_router.py`).
 - 검증: `tests/test_smoke.py::test_login_success`, 브라우저에서 viewer 계정의 쓰기 버튼 비노출.
 - 교훈: 권한 판단은 서버가 하지만, 화면이 첫 응답만으로 그릴 수 있게 응답 계약을 맞춰야 사용자가 헷갈리지 않는다.
-- 관련 커밋: {{commit:7e30690}}
+- 관련 커밋: [`44079ef`](https://github.com/we-meet-trip/map-project-admin/commit/44079ef08144aabd37660aacbffe030d055322f0)
 
 ### T-OPS-01
 **개요의 "비정상" 수에 미구성 항목이 섞임**
@@ -127,7 +127,7 @@
 - 해결: `requirements-dev.txt` 에 pytest·httpx 를 선언했다. 런타임 이미지에는 넣지 않는다.
 - 검증: CI 의 `pytest -q` 통과.
 - 교훈: 로컬 환경에 우연히 깔린 도구는 선언되지 않은 의존성이다. 깨끗한 환경에서 한 번 돌려 봐야 드러난다.
-- 관련 커밋: {{commit:ec8e587}}, {{commit:229e60b}}
+- 관련 커밋: [`8365b81`](https://github.com/we-meet-trip/map-project-admin/commit/8365b8121be4e7bf890509453c363ed328ec37d2), [`6a348a6`](https://github.com/we-meet-trip/map-project-admin/commit/6a348a6ed54bbc9a6787d61905b3e9f2f4f7d9f8)
 
 ### T-IMG-01
 **이미지 스캔이 perl·setuid 바이너리를 지적**
@@ -136,7 +136,7 @@
 - 해결: 스캐너에서 제외하지 않고 패키지 자체를 지운다. 모든 apt 단계가 끝난 뒤 `perl-base` 를 purge 하고 setuid·setgid 비트를 지운 다음, 같은 단계에서 결과를 확인한다(`Dockerfile`). 앱은 비루트 사용자(10001)로 돈다.
 - 검증: 빌드 중 `test ! -e /usr/bin/perl`, setuid 파일 0개 확인.
 - 교훈: 스캐너 예외 목록은 위험을 숨길 뿐이다. 쓰지 않는 것은 지운다.
-- 관련 커밋: {{commit:3ec7419}}
+- 관련 커밋: [`e2b01de`](https://github.com/we-meet-trip/map-project-admin/commit/e2b01de55daa8f96b7de6482c669da84082225fa)
 
 ### T-IMG-02
 **이미지 취약점 스캔 HIGH/CRITICAL**
@@ -145,4 +145,4 @@
 - 해결: fastapi·starlette·prometheus-fastapi-instrumentator 를 고정 판으로 올리고(`requirements.txt`), nginx 단계에서 `apk upgrade --no-cache` 를 실행한다(`web/Dockerfile`).
 - 검증: 재빌드 후 스캔, `pip check`.
 - 교훈: 잠금 파일 없이 범위만 두면 "어떤 판이 들어갔는지" 를 이미지마다 따로 확인해야 한다. 보안 관련 의존성은 고정한다.
-- 관련 커밋: {{commit:f939ce9}}
+- 관련 커밋: [`3d6af34`](https://github.com/we-meet-trip/map-project-admin/commit/3d6af349ccfe67ad77360068e9b857c611663662)

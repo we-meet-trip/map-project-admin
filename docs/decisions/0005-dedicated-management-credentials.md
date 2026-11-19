@@ -9,7 +9,7 @@
 3. mTLS
 
 ## 결정
-서비스별 전용 토큰(`MAP_PROJECT_USER_ADMIN_INTERNAL_TOKEN`, `MAP_PROJECT_HUB_ADMIN_INTERNAL_TOKEN`)을 택했다. 비었거나 일반 토큰·다른 관리 토큰과 같으면 네트워크 요청 전에 막고, 선택한 대상의 정해진 경로에만 붙이며 리다이렉트를 따라가지 않는다({{commit:0b8df10}}, {{commit:f2a2e64}}).
+서비스별 전용 토큰(`MAP_PROJECT_USER_ADMIN_INTERNAL_TOKEN`, `MAP_PROJECT_HUB_ADMIN_INTERNAL_TOKEN`)을 택했다. 비었거나 일반 토큰·다른 관리 토큰과 같으면 네트워크 요청 전에 막고, 선택한 대상의 정해진 경로에만 붙이며 리다이렉트를 따라가지 않는다([`b42c361`](https://github.com/we-meet-trip/map-project-admin/commit/b42c361526c7736cfdf3aff0769afd94a141caad), [`454b8af`](https://github.com/we-meet-trip/map-project-admin/commit/454b8af9ccee72d2dfad19ebe81e8a2d845d52b7)).
 
 ## 결과
 - 일반 토큰이 새어도 관리 API 는 열리지 않는다.

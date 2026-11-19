@@ -8,7 +8,7 @@
 2. 외부 도구를 iframe·링크로 연결하는 슬롯만 둔다
 
 ## 결정
-슬롯만 둔다. `ADMIN_MONITORING_PANELS`(JSON 배열)에 제목·주소·임베드 여부를 적으면 화면이 iframe 이나 링크로 보여 준다. 주소는 http(s) 만 받고 높이는 120~2000px 로 보정한다. 도구 기동은 인프라 저장소가 맡는다({{commit:87aeead}}).
+슬롯만 둔다. `ADMIN_MONITORING_PANELS`(JSON 배열)에 제목·주소·임베드 여부를 적으면 화면이 iframe 이나 링크로 보여 준다. 주소는 http(s) 만 받고 높이는 120~2000px 로 보정한다. 도구 기동은 인프라 저장소가 맡는다([`3253c90`](https://github.com/we-meet-trip/map-project-admin/commit/3253c90e8e7cc4aaca445aa553268c61e5a70044)).
 
 ## 결과
 - 콘솔 코드에 지표 쿼리가 없다.

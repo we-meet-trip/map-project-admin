@@ -8,7 +8,7 @@
 2. 쓰지 않는 패키지를 이미지에서 지우고 의존성을 올린다.
 
 ## 결정
-지운다. 비루트 사용자(10001)로 돌리고, 모든 apt 단계 뒤에 `perl-base` 를 지우고 setuid·setgid 비트를 없앤 다음 같은 단계에서 확인한다. 보안 관련 의존성은 고정 판으로 올린다({{commit:3ec7419}}, {{commit:f939ce9}}). PR·수동 실행 워크플로가 빌드한 이미지를 같은 조건으로 확인하고 HIGH·CRITICAL 을 스캔한다.
+지운다. 비루트 사용자(10001)로 돌리고, 모든 apt 단계 뒤에 `perl-base` 를 지우고 setuid·setgid 비트를 없앤 다음 같은 단계에서 확인한다. 보안 관련 의존성은 고정 판으로 올린다([`e2b01de`](https://github.com/we-meet-trip/map-project-admin/commit/e2b01de55daa8f96b7de6482c669da84082225fa), [`3d6af34`](https://github.com/we-meet-trip/map-project-admin/commit/3d6af349ccfe67ad77360068e9b857c611663662)). PR·수동 실행 워크플로가 빌드한 이미지를 같은 조건으로 확인하고 HIGH·CRITICAL 을 스캔한다.
 
 ## 결과
 - perl 이나 setuid 가 필요한 도구는 이미지 안에서 쓸 수 없다.

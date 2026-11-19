@@ -9,7 +9,7 @@
 3. 외부 IdP(OIDC) 연동
 
 ## 결정
-계정별 bcrypt 비밀번호와 서버측 세션을 택했다(`admin_accounts`, `admin_sessions`). 세션은 Redis 논리 DB 를 새로 쓰지 않고 control DB 테이블에 둔다. 최초 계정은 계정이 하나도 없을 때만 `ADMIN_BOOTSTRAP_USER`·`ADMIN_BOOTSTRAP_PASSWORD` 로 만든다. 뒤에 역할(owner·operator·viewer)과 허용 환경, DB 공유 로그인 시도 제한을 더했다({{commit:7e30690}}).
+계정별 bcrypt 비밀번호와 서버측 세션을 택했다(`admin_accounts`, `admin_sessions`). 세션은 Redis 논리 DB 를 새로 쓰지 않고 control DB 테이블에 둔다. 최초 계정은 계정이 하나도 없을 때만 `ADMIN_BOOTSTRAP_USER`·`ADMIN_BOOTSTRAP_PASSWORD` 로 만든다. 뒤에 역할(owner·operator·viewer)과 허용 환경, DB 공유 로그인 시도 제한을 더했다([`44079ef`](https://github.com/we-meet-trip/map-project-admin/commit/44079ef08144aabd37660aacbffe030d055322f0)).
 
 ## 결과
 - 감사 기록의 행위자가 사람 단위가 된다.
