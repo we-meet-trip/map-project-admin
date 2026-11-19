@@ -8,8 +8,8 @@ hub/migrations/env.py 의 규약을 그대로 미러링하되 대상 스키마�
   2) 환경변수 ADMIN_DATABASE_URL(map_admin DSN)을 읽어 동기 드라이버 명세로
      치환 후 Alembic 의 sqlalchemy.url 옵션으로 주입
   3) offline / online 모드 분기 실행
-  4) online 모드 시작 시 admin_data 스키마 보장 + alembic_version 테이블을
-     admin_data 스키마 아래에 둠(다른 서비스 마이그레이션과 충돌 방지)
+  4) alembic_version 테이블을 admin_data 스키마 아래에 둠(다른 서비스 마이그레이션과
+     충돌 방지). admin_data 스키마는 미리 있어야 한다 — 여기서 만들지 않는다.
 
 주의: ADMIN_DATABASE_URL 은 `postgresql+psycopg://...`(psycopg3) 형태로,
 psycopg 드라이버는 sync/async 겸용이다. create_engine 은 동기로 동작하므로
@@ -74,9 +74,8 @@ def run_migrations_online() -> None:
 
     동작:
       1) NullPool 임시 엔진으로 단일 connection 사용
-      2) 트랜잭션 시작 직후 admin_data 스키마 보장(없으면 생성)
-      3) alembic_version 을 admin_data 스키마 안에 두도록 설정
-      4) 등록된 revision 순차 실행
+      2) alembic_version 을 admin_data 스키마 안에 두도록 설정
+      3) 등록된 revision 순차 실행
 
     admin_data 스키마는 infra 가 생성·소유 이전한다(00-create-schemas.sql +
     10-admin.sh 의 ALTER SCHEMA ... OWNER TO map_admin). map_admin 은 DB 레벨
